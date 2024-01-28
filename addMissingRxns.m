@@ -15,13 +15,13 @@ changeCobraSolver(solverName, solverType);
 clear solverName solverType
 %% Read files
 % Import Merged model
-modelFileName = 'Model files/H1R3MergedModel.mat';
+modelFileName = ['Model files' filesep 'H1R3MergedModel.mat'];
 modelFileName= [pwd filesep modelFileName];
 mergedModel = readCbModel(modelFileName);
 
 % Import our mtbs of interest
-mtbs_interest = readtable("CSV/Reactions - Metabolites.csv");
-rxns_interest = readtable("CSV/Reactions - Rxn-Sub Pairs.csv");
+mtbs_interest = readtable(['CSV' filesep 'Reactions - Metabolites.csv']);
+rxns_interest = readtable(['CSV' filesep 'Reactions - Rxn-Sub Pairs.csv']);
 
 clear modelFileName
 
@@ -60,33 +60,23 @@ completeModel = addMultipleMetabolites(completeModel, mtbs.unnamed.names, 'metNa
 %% Add reactions
 rxn_list = rxns_interest{strcmp(rxns_interest{:,'Redundancy'}, 'No redundancy'), ["Enzyme", "Substrate", "Product", "Direction"]};
 rxn_list = cell2table(rxn_list, "VariableNames", ["Enzyme", "Substrate", "Product", "Direction"]);
-rxn_list = addvars(rxn_list, zeros(height(rxn_list), 1), zeros(height(rxn_list), 1), zeros(height(rxn_list), 1), 'NewVariableNames', {'SubID', 'ProdID', 'Dir'});
+
 % Design stoichiometric matrix
-% Find indices
-for i = 1:height(mtbs_interest)
-    mtb = mtbs_interest{i,'NameInDiagram'};
-    id = find(strcmp(mtb, completeModel.metNames), 1);
-    if ~isempty(id)
-        rxn_list{strcmp(mtb, rxn_list{:,"Substrate"}), 'SubID'} = id;
-        rxn_list{strcmp(mtb, rxn_list{:,"Product"}), 'ProdID'} = id;
-    end
-    clear id mtb
+mtb_list = unique([rxn_list{:, 'Substrate'}; rxn_list{:, 'Product'}]);
+mtb_list = [mtb_list, strings(length(mtb_list), 1)];
+for i = 1:length(mtb_list)
+    id = find(strcmp(mtb_list(i, 1), completeModel.metNames), 1);
+    mtb_list(i, 2) = completeModel.mets(id);
 end
 
-% Establish directions
-rxn_list{strcmp('One-way', rxn_list{:,'Direction'}), 'Dir'} = 1;
-rxn_list{strcmp('Two-way', rxn_list{:,'Direction'}), 'Dir'} = 0;
-
-% Add to stoichiometric matrix
-last_rxn = length(completeModel.rxns);
-completeModel.rxns = cat(1, completeModel.rxns, rxn_list{:,"Enzyme"});
-for i = 1:height(rxn_list)
-    completeModel.S(rxn_list{i, "SubID"}, i + last_rxn) = -1;
-    completeModel.S(rxn_list{i, "ProdID"}, i + last_rxn) = 1;
-    if (rxn_list{i, "Dir"} == 0)
-        % Cannot implement reversible reactions just yet
-    end
+S_mat = zeros(length(mtb_list), height(rxn_list));
+for i = 1:length(mtb_list)
+    S_mat(i,:) = S_mat(i,:)' - strcmp(mtb_list{i, 1}, rxn_list{:,'Substrate'});
+    S_mat(i,:) = S_mat(i,:)' + strcmp(mtb_list{i, 1}, rxn_list{:,'Product'});
 end
+
+% Add reactions to model
+completeModel = addMultipleReactions(completeModel, rxn_list{:,"Enzyme"}, mtb_list(:, 2), S_mat);
 
 %% Save model to file
-save("Model files\completeModel.mat", 'completeModel');
+save(['Model files' filesep 'completeModel.mat'], 'completeModel');

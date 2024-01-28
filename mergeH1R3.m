@@ -14,25 +14,27 @@ solverType = 'LP';
 changeCobraSolver(solverName, solverType);
 
 %% Read files
+addpath(pwd);
+
 % Import Human1-GEM
-modelFileName = 'Model files/Human-GEM.mat';
+modelFileName = ['Model files' filesep 'Human-GEM.mat'];
 modelFileName= [pwd filesep modelFileName];
 human1Model = readCbModel(modelFileName);
 
 % Import Recon3D
-modelFileName = 'Model files/Recon3DModel_301.mat';
+modelFileName = ['Model files' filesep 'Recon3DModel_301.mat'];
 modelFileName= [pwd filesep modelFileName];
 recon3dModel = readCbModel(modelFileName);
 
 % Import our rxns of interest
-rxn_interest = readtable("CSV/Reactions - Rxn-Sub Pairs.csv");
-mtbs_interest = readtable("CSV/Reactions - Metabolites.csv");
+rxns_interest = readtable(['CSV' filesep 'Reactions - Rxn-Sub Pairs.csv']);
+mtbs_interest = readtable(['CSV' filesep 'Reactions - Metabolites.csv']);
 
 clear modelFileName solverName solverType
 
 %% Manipulate Human1 model to fit our interest
 % Find reactions
-h1rxnID = unique(findRxnIDs(human1Model, rxn_interest{:,"Database"}));
+h1rxnID = unique(findRxnIDs(human1Model, rxns_interest{:,"Database"}));
 h1rxnID(h1rxnID==0) = [];
 
 % Find metabolites
@@ -45,7 +47,7 @@ sh1Model = removeRxns(human1Model, extraRxnh1);
 
 %% Manipulate Human1 model to fit our interest
 % Find reactions
-r3rxnID = unique(findRxnIDs(recon3dModel, rxn_interest{:,"Database"}));
+r3rxnID = unique(findRxnIDs(recon3dModel, rxns_interest{:,"Database"}));
 r3rxnID(r3rxnID==0) = [];
 
 % Find metabolites
@@ -91,4 +93,4 @@ for i = 1:length(merge_mets)
 end
 
 %% Save model to file
-save("Model files\H1R3MergedModel.mat", 'mergedModel');
+save(['Model files' filesep 'H1R3MergedModel.mat'], 'mergedModel');
