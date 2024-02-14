@@ -58,8 +58,8 @@ completeModel = addMultipleMetabolites(completeModel, strcat(mtbs.missing.names,
 completeModel = addMultipleMetabolites(completeModel, mtbs.unnamed.names, 'metNames', mtbs_interest{mtbs.unnamed.ids, "NameInDiagram"});
 
 %% Add reactions
-rxn_list = rxns_interest{strcmp(rxns_interest{:,'Redundancy'}, 'No redundancy'), ["Enzyme", "Substrate", "Product", "Direction"]};
-rxn_list = cell2table(rxn_list, "VariableNames", ["Enzyme", "Substrate", "Product", "Direction"]);
+rxn_list = rxns_interest{strcmp(rxns_interest{:,'Redundancy'}, 'No redundancy'), ["Name", "Enzyme", "Substrate", "Product", "Direction"]};
+rxn_list = cell2table(rxn_list, "VariableNames", ["Name", "Enzyme", "Substrate", "Product", "Direction"]);
 
 % Design stoichiometric matrix
 mtb_list = unique([rxn_list{:, 'Substrate'}; rxn_list{:, 'Product'}]);
@@ -76,7 +76,7 @@ for i = 1:length(mtb_list)
 end
 
 % Add reactions to model
-completeModel = addMultipleReactions(completeModel, rxn_list{:,"Enzyme"}, mtb_list(:, 2), S_mat);
+completeModel = addMultipleReactions(completeModel, rxn_list{:,"Name"}, mtb_list(:, 2), S_mat);
 
 %% Save model to file
 save(['Model files' filesep 'completeModel.mat'], 'completeModel');
