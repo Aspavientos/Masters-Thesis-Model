@@ -13,3 +13,8 @@ solverType = 'LP';
 changeCobraSolver(solverName, solverType);
 
 clear solverName solverType
+%% Read files
+% Import Merged model
+modelFileName = ['Model files' filesep 'completeModel.mat'];
+modelFileName= [pwd filesep modelFileName];
+mergedModel = readCbModel(modelFileName);
