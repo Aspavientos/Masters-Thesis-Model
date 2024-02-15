@@ -39,3 +39,6 @@ modelAllDupes.mets(dbadps_mets.pat) = dbadps_mets.extr;
 
 % Merge models
 trueNoDupes = mergeTwoModels(modelNoDupes, modelAllDupes, 1);
+
+%% Save to file
+save(['Model files' filesep 'polishedModel.mat'], 'trueNoDupes');
