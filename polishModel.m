@@ -26,7 +26,7 @@ db_mets.extr = extract(completeModel.mets(db_mets.pat), lettersPattern(3) + digi
 [db_mets.red, db_mets.red_ia, ~] = unique(db_mets.extr);
 
 % Work with no dupes model
-modelNoDupes = removeMetabolites(completeModel, completeModel.mets(setdiff(1:length(db_mets.red), db_mets.red_ia)));
+modelNoDupes = removeMetabolites(completeModel, completeModel.mets(setdiff(1:length(db_mets.extr), db_mets.red_ia)));
 dbndps_mets.pat = contains(modelNoDupes.mets, lettersPattern(3) + digitsPattern(5));
 dbndps_mets.extr = extract(modelNoDupes.mets(dbndps_mets.pat), lettersPattern(3) + digitsPattern(5));
 modelNoDupes.mets(dbndps_mets.pat) = dbndps_mets.extr;

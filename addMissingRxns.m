@@ -75,8 +75,10 @@ for i = 1:length(mtb_list)
     S_mat(i,:) = S_mat(i,:)' + strcmp(mtb_list{i, 1}, rxn_list{:,'Product'});
 end
 
-% Add reactions to model
+% Add reactions to model and check for duplicates
 completeModel = addMultipleReactions(completeModel, rxn_list{:,"Name"}, mtb_list(:, 2), S_mat);
+
+completeModel = checkDuplicateRxn(completeModel, 'S', 1);
 
 %% Save model to file
 save(['Model files' filesep 'completeModel.mat'], 'completeModel');
