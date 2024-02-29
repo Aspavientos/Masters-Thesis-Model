@@ -93,4 +93,4 @@ for i = 1:length(merge_mets)
 end
 
 %% Save model to file
-save(['Model files' filesep 'H1R3MergedModel.mat'], 'mergedModel');
+% save(['Model files' filesep 'H1R3MergedModel.mat'], 'mergedModel');

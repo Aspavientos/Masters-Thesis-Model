@@ -75,10 +75,12 @@ for i = 1:length(mtb_list)
     S_mat(i,:) = S_mat(i,:)' + strcmp(mtb_list{i, 1}, rxn_list{:,'Product'});
 end
 
-% Add reactions to model and check for duplicates
+% Add reactions to model, add grRules and genes
 completeModel = addMultipleReactions(completeModel, rxn_list{:,"Name"}, mtb_list(:, 2), S_mat);
 
+% Check for duplicates rxns, remove unused genes
 completeModel = checkDuplicateRxn(completeModel, 'S', 1);
+completeModel = removeUnusedGenes(completeModel);
 
 %% Save model to file
-save(['Model files' filesep 'completeModel.mat'], 'completeModel');
+% save(['Model files' filesep 'completeModel.mat'], 'completeModel');

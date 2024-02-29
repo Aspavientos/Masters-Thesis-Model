@@ -1,40 +1,40 @@
 Name in diagram,Full name,Human1,Recon3D,MATLAB friendly name,Other names
-11DOC,11-deoxycortisol,MAM00295,M00603,11-deocort,Deoxycortisol
-17OHP4,17-hydroxyprogesterone,MAM00409,17ahprgstrn,17OHP,
-17OHP5,17-hydroxypregnenolone,MAM00408,17ahprgnlone,17OHP5,
-17αA5,17α- androstenediol,, ,17aA5,
-20αDHP,20α-dihydroprogesterone,MAM00580,aprgstrn,20aDHP,20-hydroxyprogesterone; 20alpha-hydroxy-4-pregnen-3-one
 21OHP,21-hydroxyprogesterone,MAM00294,11docrtstrn,21OHP,11-deoxycorticosterone
-3αDHP,3α-dihydroprogesterone,,,3aDHP,pregn-4-en-3α-ol-20-one
-3αDIOL,Androstanediol,,,3aDIOL,
-3βDIOL,3β-androstanediol,,,3bDIOL,
-"5α-pregnan-17α-ol-3,20-dione","5α-pregnan-17α-ol-3,20-dione",,,5a-p-17a-3_20-dione,17α-hydroxy-dihydroprogesterone
-5α-pregnan-20-ol-3-one,5α-pregnan-20-ol-3-one,MAM10019,,5a-p-20-ol-3-one,
-"5α-pregnan-3,17α-diol-20-one","5α-pregnan-3,17α-diol-20-one",,,5a-p-3_17a-d-20-one,
-5αDHP,Allopregnanedione,MAM01072,C03681,5aDHP,"5α-pregnane-3,20-dione; 5α-Dihydroprogesterone"
-A4,Androstenedione,MAM00971,andrstndn,A4,"4-androstene-3,17-dione"
+11DOC,11-deoxycortisol,MAM00295,M00603,11-deocort,Deoxycortisol
+17OHP5,17-hydroxypregnenolone,MAM00408,17ahprgnlone,17OHP5,
+17OHP4,17-hydroxyprogesterone,MAM00409,17ahprgstrn,17OHP,
+20αDHP,20α-dihydroprogesterone,MAM00580,aprgstrn,20aDHP,20-hydroxyprogesterone; 20alpha-hydroxy-4-pregnen-3-one
+A4,Androstenedione,MAM00971,andrstndn,A4,4-androstene-3;17-dione
+androstanedione,Androstanedione,MAM01064,andrstandn,androsta,5α-androstane-3;17-dione
+DHT,Dihydrotestosterone,MAM01069,5adtststerone,DHT,5α-dihydrotestosterone
+5αDHP,Allopregnanedione,MAM01072,C03681,5aDHP,5α-pregnane-3;20-dione; 5α-Dihydroprogesterone
+THP,Allopregnanolone,MAM01314,CE2211,THP,
 A5,Androstenediol,MAM01336,C04295,A5,5-androstenediol
-allopregnandiol,Allopregnandiol,,,allopreg,"5α-pregnane-3α,20α-diol"
 AN,Androsterone,MAM01338,andrstrn,AN,
-androstanedione,Androstanedione,MAM01064,andrstandn,androsta,"5α-androstane-3,17-dione"
 Cho,Cholesterol,MAM01450,chsterol,cho,
 corticosterone,Corticosterone,MAM01614,crtstrn,corticost,
 cortisol,Cortisol,MAM01615,crtsl,cortisol,
 cortisone,Cortisone,MAM01616,cortsn,cortisone,
 DHEA,Dehydroepiandrosterone,MAM01660,dhea,DHEA,
-DHT,Dihydrotestosterone,MAM01069,5adtststerone,DHT,5α-dihydrotestosterone
-E1,Estrone,MAM01790,estrone,E1,
 E2,17β-estradiol,MAM01787,estradiol,E2,Estradiol
+E1,Estrone,MAM01790,estrone,E1,
+H,Hydrogen,MAM02039,h,H,Proton
+H2O,Water,MAM02040,h2o,H2O,
+NAD,,MAM02552,nad,NAD,
+NADH,,MAM02553,nadh,NADH,
+NADP,,MAM02554,nadp,NADP,
+NADPH,,MAM02555,nadph,NADPH,
+O2,Oxygen,MAM02630,o2,O2,
+P5,Pregnenolone,MAM02763,prgnlone,P5,
+P,Progesterone,MAM02769,prgstrn,P,
+T,Testosterone,MAM02969,tststerone,T,
+5α-pregnan-20-ol-3-one,5α-pregnan-20-ol-3-one,MAM10019,,5a-p-20-ol-3-one,
+17αA5,17α- androstenediol,, ,17aA5,
+3αDHP,3α-dihydroprogesterone,,,3aDHP,pregn-4-en-3α-ol-20-one
+3αDIOL,Androstanediol,,,3aDIOL,
+3βDIOL,3β-androstanediol,,,3bDIOL,
+5α-pregnan-17α-ol-3;20-dione,5α-pregnan-17α-ol-3;20-dione,,,5a-p-17a-3_20-dione,17α-hydroxy-dihydroprogesterone
+5α-pregnan-3;17α-diol-20-one,5α-pregnan-3;17α-diol-20-one,,,5a-p-3_17a-d-20-one,
+allopregnandiol,Allopregnandiol,,,allopreg,5α-pregnane-3α;20α-diol
 EPI,Epiandrosterone,,,EPI,
 EpiT,Epitestosterone,,,EpiT,17α-testosterone
-P,Progesterone,MAM02769,prgstrn,P,
-P5,Pregnenolone,MAM02763,prgnlone,P5,
-T,Testosterone,MAM02969,tststerone,T,
-THP,Allopregnanolone,MAM01314,CE2211,THP,
-H,Hydrogen,MAM02039,h,H,Proton
-NAD,,MAM02552,nad,NAD,
-NADP,,MAM02554,nadp,NADP,
-NADH,,MAM02553,nadh,NADH,
-NADPH,,MAM02555,nadph,NADPH,
-H2O,Water,MAM02040,h2o,H2O,
-O2,Oxygen,MAM02630,o2,O2,

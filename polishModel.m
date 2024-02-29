@@ -13,11 +13,17 @@ solverType = 'LP';
 changeCobraSolver(solverName, solverType);
 
 clear solverName solverType
-%% Read filesk
+%% Read files
 % Import complete model
 modelFileName = ['Model files' filesep 'completeModel.mat'];
 modelFileName = [pwd filesep modelFileName];
 completeModel = readCbModel(modelFileName);
+
+% Import gene association data
+enz_interest = readtable(['CSV' filesep 'Reactions - Enzymes.csv'], 'Delimiter', 'comma');
+
+% Import gene association data
+rxns_interest = readtable(['CSV' filesep 'Reactions - Rxn-Sub Pairs.csv']);
 
 clear modelFileName
 %% Find same metabolites in different reactions and sequester them
@@ -40,5 +46,46 @@ modelAllDupes.mets(dbadps_mets.pat) = dbadps_mets.extr;
 % Merge models
 trueNoDupes = mergeTwoModels(modelNoDupes, modelAllDupes, 1);
 
+%% Fix gene-rxn associations
+% Remove previous genes to start from blank slate
+generxnAss = removeGenesFromModel(trueNoDupes, trueNoDupes.genes);
+
+% Add genes of interest
+gen = enz_interest.EnsemblID;
+gen(strcmp(gen, '')) = enz_interest.NameInDiagram(strcmp(gen, ''));
+generxnAss = addGenes(generxnAss, gen, 'geneNames', enz_interest.NameInDiagram);
+
+% Create grRules manually
+grules = strings(length(generxnAss.rxns),1);
+for i = 1:length(generxnAss.rxns)
+    orig = find(strcmp(rxns_interest.Name, generxnAss.rxns(i)), 1);
+    sub = rxns_interest.Substrate(orig);
+    prod = rxns_interest.Product(orig);
+
+    redun = find(strcmp(rxns_interest.Substrate, sub).*strcmp(rxns_interest.Product, prod));
+    geneid = find(strcmp(rxns_interest.Enzyme(redun(1)), enz_interest.NameInDiagram));
+    if ~strcmp(enz_interest.EnsemblID(geneid), '')
+        grules(i) = enz_interest.EnsemblID(geneid);
+    else
+        grules(i) = enz_interest.NameInDiagram(geneid);
+    end
+
+    for j = 2:length(redun)
+        geneid = find(strcmp(rxns_interest.Enzyme(redun(j)), enz_interest.NameInDiagram));
+        if ~strcmp(enz_interest.EnsemblID(geneid), '')
+            grules(i) = append(grules(i), ' or ', enz_interest.EnsemblID(geneid));
+        else
+            grules(i) = append(grules(i), ' or ', enz_interest.NameInDiagram(geneid));
+        end
+    end
+end
+
+clear gen i j orig sub prod redun geneid
+%% Edit model metadata
+% kept_fields
+% rmfield
+
+%% Perform sanity checks
+
 %% Save to file
-save(['Model files' filesep 'polishedModel.mat'], 'trueNoDupes');
+% save(['Model files' filesep 'polishedModel.mat'], 'polishedModel');

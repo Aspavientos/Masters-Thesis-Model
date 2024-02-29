@@ -1,106 +1,106 @@
 Name,Enzyme,Substrate,Product,Direction,Confidence,Database,Redundancy,Compartment,Notes
-MAR07976,17βHSD1,P,20αDHP,One-way,Postulated,MAR07976,Redundant,Cytosol,
-MAR07955,17βHSD10,T,A4,One-way,Postulated,MAR07955,Found,Cytosol,Technically only 17βHSD2
 HMR_2003,17βHSD10,THP,5αDHP,One-way,Established,HMR_2003,Found,Cytosol,3Alpha-Hydroxysteroid 3-Dehydrogenase
-MAR10066,17βHSD2,20αDHP,P,One-way,Established,MAR10066,Found,Cytosol,
-HSD17B1,17βHSD2,E2,E1,One-way,Established,HSD17B1,Found,Cytosol,"17βHSD1, two-way"
-MAR07955,17βHSD2,T,A4,One-way,Established,MAR07955,Found,Cytosol,
-HMR_2018,17βHSD6,AN,androstanedione,One-way,Established,HMR_2018,Found,Cytosol,"There are two versions depending on which side there is NADPH, I took the most recent one."
-HSD17B1,17βHSD6,E2,E1,One-way,Postulated,HSD17B1,Redundant,Cytosol,"17βHSD1, two-way"
-MAR07973,3βHSD1,17OHP5,17OHP4,One-way,Established,MAR07973,Found,Cytosol,"17alpha, but similar enough (?)"
-MAR07930,3βHSD1,P5,P,One-way,Established,MAR07930,Found,Cytosol,
-MAR07973,3βHSD2,17OHP5,17OHP4,One-way,Established,MAR07973,Found,Cytosol,"17alpha, but similar enough (?)"
-MAR07930,3βHSD2,P5,P,One-way,Established,MAR07930,Found,Cytosol,
-MAR02004,AKR1C1,5αDHP,THP,One-way,Established,MAR02004,Redundant,Cytosol,"Only for AKR1C4, but Andrea said they are quite interchangeable"
-MAR01973,AKR1C1,A4,T,Two-way,Postulated,MAR01973,Redundant,Cytosol,Only for AKR1C3
-HSD17B1,AKR1C1,E1,E2,One-way,Postulated,HSD17B1,Redundant,Cytosol,"17βHSD1, two-way"
-MAR07976,AKR1C1,P,20αDHP,One-way,Established,MAR07976,Found,Cytosol,
-MAR02004,AKR1C2,5αDHP,THP,Two-way,Established,MAR02004,Redundant,Cytosol,"Only for AKR1C4, but Andrea said they are quite interchangeable"
-MAR01973,AKR1C2,A4,T,Two-way,Postulated,MAR01973,Redundant,Cytosol,Only for AKR1C3
-MAR02016,AKR1C2,androstanedione,AN,One-way,Established,MAR02016,Found,Cytosol,
-HSD17B1,AKR1C2,E1,E2,Two-way,Postulated,HSD17B1,Redundant,Cytosol,"17βHSD1, two-way"
-MAR07976,AKR1C2,P,20αDHP,Two-way,Postulated,MAR07976,Redundant,Cytosol,
-MAR02004,AKR1C3,5αDHP,THP,One-way,Established,MAR02004,Redundant,Cytosol,"Only for AKR1C4, but Andrea said they are quite interchangeable"
-MAR01973,AKR1C3,A4,T,One-way,Established,MAR01973,Found,Cytosol,
-HSD17B1,AKR1C3,E1,E2,Two-way,Postulated,HSD17B1,Redundant,Cytosol,"17βHSD1, two-way"
-MAR07976,AKR1C3,P,20αDHP,Two-way,Postulated,MAR07976,Redundant,Cytosol,
-MAR01973,AKR1C3,T,A4,One-way,Postulated,MAR01973,Redundant,Cytosol,Other way around
-MAR01973,AKR1C4,A4,T,Two-way,Postulated,MAR01973,Redundant,Cytosol,Only for AKR1C3
-MAR02016,AKR1C4,androstanedione,AN,One-way,Established,MAR02016,Found,Cytosol,
-HSD17B1,AKR1C4,E1,E2,Two-way,Postulated,HSD17B1,Redundant,Cytosol,"17βHSD1, two-way"
-MAR07976,AKR1C4,P,20αDHP,Two-way,Postulated,MAR07976,Redundant,Cytosol,
-MAR01942,CYP11B1,21OHP,corticosterone,One-way,Established,MAR01942,Found,Cytosol,
-MAR01959,CYP17A1,17OHP5,DHEA,One-way,Established,MAR01959,Found,Cytosol,
-MAR01981,CYP17A1,P,17OHP4,One-way,Established,MAR01981,Found,Cytosol,
-MAR01944,CYP17A1,P5,17OHP5,One-way,Established,MAR01944,Found,Cytosol,
-MAR01988,CYP21A2,17OHP4,11DOC,One-way,Established,MAR01988,Found,Cytosol,
-MAR02007,CYP21A2,P,21OHP,One-way,Established,MAR02007,Found,Cytosol,
-MAR01973,DHRS11,A4,T,One-way,Established,MAR01973,Redundant,Cytosol,Other enzymes
-HSD17B1,DHRS11,E1,E2,One-way,Established,HSD17B1,Redundant,Cytosol,"17βHSD1, two-way"
-MAR02002,SDR5A1,P,5αDHP,One-way,Established,MAR02002,Found,Cytosol,
-MAR01976,SDR5A1,T,DHT,One-way,Established,MAR01976,Found,Cytosol,
-MAR01976,SRD5A2,T,DHT,One-way,Established,MAR01976,Found,Cytosol,
-MAR02002,SRD5A3,P,5αDHP,One-way,Established,MAR02002,Found,Cytosol,
-MAR01976,SRD5A3,T,DHT,One-way,Established,MAR01976,Found,Cytosol,
-MAR07942,11βHSD1,cortisol,cortisone,One-way,Established,MAR07942,Found,ER,
-MAR07943,11βHSD2,cortisone,cortisol,One-way,Established,MAR07943,Found,ER,
-MAR07968,17βHSD1,E1,E2,One-way,Established,MAR07968,Found,ER,
+HMR_2018,17βHSD6,AN,androstanedione,One-way,Established,HMR_2018,Found,Cytosol,There are two versions depending on which side there is NADPH; I took the most recent one.
+HSD17B1,AKR1C1,E1,E2,One-way,Postulated,HSD17B1,Redundant,Cytosol,17βHSD1; two-way
+HSD17B1,AKR1C2,E1,E2,Two-way,Postulated,HSD17B1,Redundant,Cytosol,17βHSD1; two-way
+HSD17B1,AKR1C3,E1,E2,Two-way,Postulated,HSD17B1,Redundant,Cytosol,17βHSD1; two-way
+HSD17B1,AKR1C4,E1,E2,Two-way,Postulated,HSD17B1,Redundant,Cytosol,17βHSD1; two-way
+HSD17B1,DHRS11,E1,E2,One-way,Established,HSD17B1,Redundant,Cytosol,17βHSD1; two-way
+HSD17B1,17βHSD2,E2,E1,One-way,Established,HSD17B1,Found,Cytosol,17βHSD1; two-way
+HSD17B1,17βHSD6,E2,E1,One-way,Postulated,HSD17B1,Redundant,Cytosol,17βHSD1; two-way
 HSD3B12r,3βHSD1,DHEA,A4,One-way,Established,HSD3B12r,Found,ER,
 HSD3B12r,3βHSD2,DHEA,A4,One-way,Established,HSD3B12r,Redundant,ER,Technically 3βHSD1
+MAR01942,CYP11B1,21OHP,corticosterone,One-way,Established,MAR01942,Found,Cytosol,
+MAR01944,CYP17A1,P5,17OHP5,One-way,Established,MAR01944,Found,Cytosol,
+MAR01959,CYP17A1,17OHP5,DHEA,One-way,Established,MAR01959,Found,Cytosol,
+MAR01973,AKR1C3,A4,T,One-way,Established,MAR01973,Found,Cytosol,
+MAR01973,AKR1C1,A4,T,Two-way,Postulated,MAR01973,Redundant,Cytosol,Only for AKR1C3
+MAR01973,AKR1C2,A4,T,Two-way,Postulated,MAR01973,Redundant,Cytosol,Only for AKR1C3
+MAR01973,AKR1C4,A4,T,Two-way,Postulated,MAR01973,Redundant,Cytosol,Only for AKR1C3
+MAR01973,DHRS11,A4,T,One-way,Established,MAR01973,Redundant,Cytosol,Other enzymes
+MAR01973,AKR1C3,T,A4,One-way,Postulated,MAR01973,Redundant,Cytosol,Other way around
+MAR01976,SRD5A1,T,DHT,One-way,Established,MAR01976,Found,Cytosol,
+MAR01976,SRD5A2,T,DHT,One-way,Established,MAR01976,Found,Cytosol,
+MAR01976,SRD5A3,T,DHT,One-way,Established,MAR01976,Found,Cytosol,
+MAR01981,CYP17A1,P,17OHP4,One-way,Established,MAR01981,Found,Cytosol,
+MAR01988,CYP21A2,17OHP4,11DOC,One-way,Established,MAR01988,Found,Cytosol,
+MAR01995,CYP11B1,11DOC,cortisol,One-way,Established,MAR01995,Found,Mitochondria,
+MAR02002,SRD5A1,P,5αDHP,One-way,Established,MAR02002,Found,Cytosol,
+MAR02002,SRD5A3,P,5αDHP,One-way,Established,MAR02002,Found,Cytosol,
+MAR02004,AKR1C1,5αDHP,THP,One-way,Established,MAR02004,Redundant,Cytosol,Only for AKR1C4; but Andrea said they are quite interchangeable
+MAR02004,AKR1C2,5αDHP,THP,Two-way,Established,MAR02004,Redundant,Cytosol,Only for AKR1C4; but Andrea said they are quite interchangeable
+MAR02004,AKR1C3,5αDHP,THP,One-way,Established,MAR02004,Redundant,Cytosol,Only for AKR1C4; but Andrea said they are quite interchangeable
+MAR02007,CYP21A2,P,21OHP,One-way,Established,MAR02007,Found,Cytosol,
+MAR02016,AKR1C2,androstanedione,AN,One-way,Established,MAR02016,Found,Cytosol,
+MAR02016,AKR1C4,androstanedione,AN,One-way,Established,MAR02016,Found,Cytosol,
+MAR07930,3βHSD1,P5,P,One-way,Established,MAR07930,Found,Cytosol,
+MAR07930,3βHSD2,P5,P,One-way,Established,MAR07930,Found,Cytosol,
+MAR07935,CYP11A1,Cholesterol,P5,One-way,Established,MAR07935,Found,Mitochondria,
 MAR07940,CYP19A1,A4,E1,One-way,Established,MAR07940,Found,ER,
 MAR07941,CYP19A1,T,E2,One-way,Established,MAR07941,Found,ER,
-SR5AR2r,SDR5A1,A4,androstanedione,One-way,Established,SR5AR2r,Redundant,ER,Technically only for SRD5A2
+MAR07942,11βHSD1,cortisol,cortisone,One-way,Established,MAR07942,Found,ER,
+MAR07943,11βHSD2,cortisone,cortisol,One-way,Established,MAR07943,Found,ER,
+MAR07955,17βHSD10,T,A4,One-way,Postulated,MAR07955,Found,Cytosol,Technically only 17βHSD2
+MAR07955,17βHSD2,T,A4,One-way,Established,MAR07955,Found,Cytosol,
+MAR07968,17βHSD1,E1,E2,One-way,Established,MAR07968,Found,ER,
+MAR07973,3βHSD1,17OHP5,17OHP4,One-way,Established,MAR07973,Found,Cytosol,17alpha; but similar enough (?)
+MAR07973,3βHSD2,17OHP5,17OHP4,One-way,Established,MAR07973,Found,Cytosol,17alpha; but similar enough (?)
+MAR07976,AKR1C1,P,20αDHP,One-way,Established,MAR07976,Found,Cytosol,
+MAR07976,17βHSD1,P,20αDHP,One-way,Postulated,MAR07976,Redundant,Cytosol,
+MAR07976,AKR1C2,P,20αDHP,Two-way,Postulated,MAR07976,Redundant,Cytosol,
+MAR07976,AKR1C3,P,20αDHP,Two-way,Postulated,MAR07976,Redundant,Cytosol,
+MAR07976,AKR1C4,P,20αDHP,Two-way,Postulated,MAR07976,Redundant,Cytosol,
+MAR10066,17βHSD2,20αDHP,P,One-way,Established,MAR10066,Found,Cytosol,
 SR5AR2r,SRD5A2,A4,androstanedione,One-way,Established,SR5AR2r,Found,ER,
+SR5AR2r,SRD5A1,A4,androstanedione,One-way,Established,SR5AR2r,Redundant,ER,Technically only for SRD5A2
 SR5AR2r,SRD5A3,A4,androstanedione,One-way,Established,SR5AR2r,Redundant,ER,Technically only for SRD5A2
-MAR07935,CYP11A1,Cholesterol,P5,One-way,Established,MAR07935,Found,Mitochondria,
-MAR01995,CYP11B1,11DOC,cortisol,One-way,Established,MAR01995,Found,Mitochondria,
-3βDIOL_to_EPI_via_17βHSD1,17βHSD1,3βDIOL,EPI,One-way,Postulated,,No redundancy,,
-DHEA_to_A5_via_17βHSD1,17βHSD1,DHEA,A5,One-way,Postulated,,No redundancy,,
-DHT_to_3βDIOL_via_17βHSD1,17βHSD1,DHT,3βDIOL,One-way,Postulated,,No redundancy,,
-DHT_to_androstanedione_via_17βHSD1,17βHSD1,DHT,androstanedione,One-way,Postulated,,No redundancy,,
-3αDIOL_to_AN_via_17βHSD10,17βHSD10,3αDIOL,AN,One-way,Postulated,,No redundancy,,
-DHT_to_androstanedione_via_17βHSD10,17βHSD10,DHT,androstanedione,One-way,Postulated,,No redundancy,,
-AN_to_3αDIOL_via_17βHSD15,17βHSD15,AN,3αDIOL,One-way,Postulated,,No redundancy,,
-androstanedione_to_DHT_via_17βHSD15,17βHSD15,androstanedione,DHT,One-way,Postulated,,No redundancy,,
-3αDIOL_to_AN_via_17βHSD2,17βHSD2,3αDIOL,AN,One-way,Established,,No redundancy,,
-5α-pregnan-20-ol-3-one_to_5αDHP_via_17βHSD2,17βHSD2,5α-pregnan-20-ol-3-one,5αDHP,One-way,Established,,No redundancy,,
-A5_to_DHEA_via_17βHSD2,17βHSD2,A5,DHEA,One-way,Established,,No redundancy,,
-allopregnandiol_to_THP_via_17βHSD2,17βHSD2,allopregnandiol,THP,One-way,Postulated,,No redundancy,,
-DHT_to_androstanedione_via_17βHSD2,17βHSD2,DHT,androstanedione,One-way,Established,,No redundancy,,
-3αDIOL_to_AN_via_17βHSD6,17βHSD6,3αDIOL,AN,One-way,Postulated,,No redundancy,,
-3αDIOL_to_DHT_via_17βHSD6,17βHSD6,3αDIOL,DHT,One-way,Established,,No redundancy,,
-AN_to_EPI_via_17βHSD6,17βHSD6,AN,EPI,One-way,Established,,No redundancy,,
+17OHP4_to_5α-pregnan-17α-ol-3;20-dione_via_SRD5A1,SRD5A1,17OHP4,5α-pregnan-17α-ol-3;20-dione,One-way,Established,,No redundancy,,
+17OHP4_to_5α-pregnan-17α-ol-3;20-dione_via_SRD5A3,SRD5A3,17OHP4,5α-pregnan-17α-ol-3;20-dione,One-way,Established,,No redundancy,,
 17αA5_to_EpiT_via_3βHSD1,3βHSD1,17αA5,EpiT,One-way,Established,,No redundancy,,
-A5_to_T_via_3βHSD1,3βHSD1,A5,T,One-way,Established,,No redundancy,,
-3αDIOL_to_AN_via_AKR1C1,AKR1C1,3αDIOL,AN,One-way,Postulated,,No redundancy,,
-"5α-pregnan-17α-ol-3,20-dione_to_5α-pregnan-3,17α-diol-20-one_via_AKR1C1",AKR1C1,"5α-pregnan-17α-ol-3,20-dione","5α-pregnan-3,17α-diol-20-one",One-way,Postulated,,No redundancy,,
-5α-pregnan-20-ol-3-one_to_allopregnandiol_via_AKR1C1,AKR1C1,5α-pregnan-20-ol-3-one,allopregnandiol,One-way,Established,,No redundancy,,
-5αDHP_to_5α-pregnan-20-ol-3-one_via_AKR1C1,AKR1C1,5αDHP,5α-pregnan-20-ol-3-one,One-way,Established,,No redundancy,,
-androstanedione_to_DHT_via_AKR1C1,AKR1C1,androstanedione,DHT,One-way,Established,,No redundancy,,
-androstanedione_to_EPI_via_AKR1C1,AKR1C1,androstanedione,EPI,One-way,Postulated,,No redundancy,,
-DHT_to_3αDIOL_via_AKR1C1,AKR1C1,DHT,3αDIOL,One-way,Postulated,,No redundancy,,
-DHT_to_3βDIOL_via_AKR1C1,AKR1C1,DHT,3βDIOL,One-way,Established,,No redundancy,,
-THP_to_allopregnandiol_via_AKR1C1,AKR1C1,THP,allopregnandiol,One-way,Established,,No redundancy,,
-3αDIOL_to_DHT_via_AKR1C2,AKR1C2,3αDIOL,DHT,One-way,Postulated,,No redundancy,,
-"5α-pregnan-17α-ol-3,20-dione_to_5α-pregnan-3,17α-diol-20-one_via_AKR1C2",AKR1C2,"5α-pregnan-17α-ol-3,20-dione","5α-pregnan-3,17α-diol-20-one",One-way,Established,,No redundancy,,
-5α-pregnan-20-ol-3-one_to_allopregnandiol_via_AKR1C2,AKR1C2,5α-pregnan-20-ol-3-one,allopregnandiol,One-way,Established,,No redundancy,,
-DHT_to_3αDIOL_via_AKR1C2,AKR1C2,DHT,3αDIOL,One-way,Established,,No redundancy,,
-3αDIOL_to_AN_via_AKR1C3,AKR1C3,3αDIOL,AN,One-way,Established,,No redundancy,,
-"5α-pregnan-17α-ol-3,20-dione_to_5α-pregnan-3,17α-diol-20-one_via_AKR1C3",AKR1C3,"5α-pregnan-17α-ol-3,20-dione","5α-pregnan-3,17α-diol-20-one",One-way,Established,,No redundancy,,
-5α-pregnan-20-ol-3-one_to_allopregnandiol_via_AKR1C3,AKR1C3,5α-pregnan-20-ol-3-one,allopregnandiol,One-way,Established,,No redundancy,,
-androstanedione_to_DHT_via_AKR1C3,AKR1C3,androstanedione,DHT,One-way,Established,,No redundancy,,
-DHEA_to_A5_via_AKR1C3,AKR1C3,DHEA,A5,One-way,Established,,No redundancy,,
-DHT_to_3αDIOL_via_AKR1C3,AKR1C3,DHT,3αDIOL,One-way,Established,,No redundancy,,
-3αDIOL_to_DHT_via_AKR1C4,AKR1C4,3αDIOL,DHT,One-way,Postulated,,No redundancy,,
-DHT_to_3αDIOL_via_AKR1C4,AKR1C4,DHT,3αDIOL,One-way,Established,,No redundancy,,
-5αDHP_to_androstanedione_via_CYP17A1,CYP17A1,5αDHP,androstanedione,One-way,Established,,No redundancy,,
-P_to_A4_via_CYP17A1,CYP17A1,P,A4,One-way,Established,,No redundancy,,
-"THP_to_5α-pregnan-3,17α-diol-20-one_via_CYP17A1",CYP17A1,THP,"5α-pregnan-3,17α-diol-20-one",One-way,Established,,No redundancy,,
-AN_to_3αDIOL_via_DHRS11,DHRS11,AN,3αDIOL,One-way,Established,,No redundancy,,
-androstanedione_to_DHT_via_DHRS11,DHRS11,androstanedione,DHT,One-way,Established,,No redundancy,,
-DHEA_to_A5_via_DHRS11,DHRS11,DHEA,A5,One-way,Established,,No redundancy,,
-P_to_3αDHP_via_DHRS11,DHRS11,P,3αDHP,One-way,Established,,No redundancy,,
-"17OHP4_to_5α-pregnan-17α-ol-3,20-dione_via_SDR5A1",SDR5A1,17OHP4,"5α-pregnan-17α-ol-3,20-dione",One-way,Established,,No redundancy,,
-20αDHP_to_5α-pregnan-20-ol-3-one_via_SDR5A1,SDR5A1,20αDHP,5α-pregnan-20-ol-3-one,One-way,Established,,No redundancy,,
-"17OHP4_to_5α-pregnan-17α-ol-3,20-dione_via_SRD5A3",SRD5A3,17OHP4,"5α-pregnan-17α-ol-3,20-dione",One-way,Established,,No redundancy,,
+20αDHP_to_5α-pregnan-20-ol-3-one_via_SRD5A1,SRD5A1,20αDHP,5α-pregnan-20-ol-3-one,One-way,Established,,No redundancy,,
 20αDHP_to_5α-pregnan-20-ol-3-one_via_SRD5A3,SRD5A3,20αDHP,5α-pregnan-20-ol-3-one,One-way,Established,,No redundancy,,
+3αDIOL_to_AN_via_17βHSD10,17βHSD10,3αDIOL,AN,One-way,Postulated,,No redundancy,,
+3αDIOL_to_AN_via_17βHSD2,17βHSD2,3αDIOL,AN,One-way,Established,,No redundancy,,
+3αDIOL_to_AN_via_17βHSD6,17βHSD6,3αDIOL,AN,One-way,Postulated,,No redundancy,,
+3αDIOL_to_AN_via_AKR1C1,AKR1C1,3αDIOL,AN,One-way,Postulated,,No redundancy,,
+3αDIOL_to_AN_via_AKR1C3,AKR1C3,3αDIOL,AN,One-way,Established,,No redundancy,,
+3αDIOL_to_DHT_via_17βHSD6,17βHSD6,3αDIOL,DHT,One-way,Established,,No redundancy,,
+3αDIOL_to_DHT_via_AKR1C2,AKR1C2,3αDIOL,DHT,One-way,Postulated,,No redundancy,,
+3αDIOL_to_DHT_via_AKR1C4,AKR1C4,3αDIOL,DHT,One-way,Postulated,,No redundancy,,
+3βDIOL_to_EPI_via_17βHSD1,17βHSD1,3βDIOL,EPI,One-way,Postulated,,No redundancy,,
+5α-pregnan-17α-ol-3;20-dione_to_5α-pregnan-3;17α-diol-20-one_via_AKR1C1,AKR1C1,5α-pregnan-17α-ol-3;20-dione,5α-pregnan-3;17α-diol-20-one,One-way,Postulated,,No redundancy,,
+5α-pregnan-17α-ol-3;20-dione_to_5α-pregnan-3;17α-diol-20-one_via_AKR1C2,AKR1C2,5α-pregnan-17α-ol-3;20-dione,5α-pregnan-3;17α-diol-20-one,One-way,Established,,No redundancy,,
+5α-pregnan-17α-ol-3;20-dione_to_5α-pregnan-3;17α-diol-20-one_via_AKR1C3,AKR1C3,5α-pregnan-17α-ol-3;20-dione,5α-pregnan-3;17α-diol-20-one,One-way,Established,,No redundancy,,
+5α-pregnan-20-ol-3-one_to_5αDHP_via_17βHSD2,17βHSD2,5α-pregnan-20-ol-3-one,5αDHP,One-way,Established,,No redundancy,,
+5α-pregnan-20-ol-3-one_to_allopregnandiol_via_AKR1C1,AKR1C1,5α-pregnan-20-ol-3-one,allopregnandiol,One-way,Established,,No redundancy,,
+5α-pregnan-20-ol-3-one_to_allopregnandiol_via_AKR1C2,AKR1C2,5α-pregnan-20-ol-3-one,allopregnandiol,One-way,Established,,No redundancy,,
+5α-pregnan-20-ol-3-one_to_allopregnandiol_via_AKR1C3,AKR1C3,5α-pregnan-20-ol-3-one,allopregnandiol,One-way,Established,,No redundancy,,
+5αDHP_to_5α-pregnan-20-ol-3-one_via_AKR1C1,AKR1C1,5αDHP,5α-pregnan-20-ol-3-one,One-way,Established,,No redundancy,,
+5αDHP_to_androstanedione_via_CYP17A1,CYP17A1,5αDHP,androstanedione,One-way,Established,,No redundancy,,
+A5_to_DHEA_via_17βHSD2,17βHSD2,A5,DHEA,One-way,Established,,No redundancy,,
+A5_to_T_via_3βHSD1,3βHSD1,A5,T,One-way,Established,,No redundancy,,
+allopregnandiol_to_THP_via_17βHSD2,17βHSD2,allopregnandiol,THP,One-way,Postulated,,No redundancy,,
+AN_to_3αDIOL_via_17βHSD15,17βHSD15,AN,3αDIOL,One-way,Postulated,,No redundancy,,
+AN_to_3αDIOL_via_DHRS11,DHRS11,AN,3αDIOL,One-way,Established,,No redundancy,,
+AN_to_EPI_via_17βHSD6,17βHSD6,AN,EPI,One-way,Established,,No redundancy,,
+androstanedione_to_DHT_via_17βHSD15,17βHSD15,androstanedione,DHT,One-way,Postulated,,No redundancy,,
+androstanedione_to_DHT_via_AKR1C1,AKR1C1,androstanedione,DHT,One-way,Established,,No redundancy,,
+androstanedione_to_DHT_via_AKR1C3,AKR1C3,androstanedione,DHT,One-way,Established,,No redundancy,,
+androstanedione_to_DHT_via_DHRS11,DHRS11,androstanedione,DHT,One-way,Established,,No redundancy,,
+androstanedione_to_EPI_via_AKR1C1,AKR1C1,androstanedione,EPI,One-way,Postulated,,No redundancy,,
+DHEA_to_A5_via_17βHSD1,17βHSD1,DHEA,A5,One-way,Postulated,,No redundancy,,
+DHEA_to_A5_via_AKR1C3,AKR1C3,DHEA,A5,One-way,Established,,No redundancy,,
+DHEA_to_A5_via_DHRS11,DHRS11,DHEA,A5,One-way,Established,,No redundancy,,
+DHT_to_3αDIOL_via_AKR1C1,AKR1C1,DHT,3αDIOL,One-way,Postulated,,No redundancy,,
+DHT_to_3αDIOL_via_AKR1C2,AKR1C2,DHT,3αDIOL,One-way,Established,,No redundancy,,
+DHT_to_3αDIOL_via_AKR1C3,AKR1C3,DHT,3αDIOL,One-way,Established,,No redundancy,,
+DHT_to_3αDIOL_via_AKR1C4,AKR1C4,DHT,3αDIOL,One-way,Established,,No redundancy,,
+DHT_to_3βDIOL_via_17βHSD1,17βHSD1,DHT,3βDIOL,One-way,Postulated,,No redundancy,,
+DHT_to_3βDIOL_via_AKR1C1,AKR1C1,DHT,3βDIOL,One-way,Established,,No redundancy,,
+DHT_to_androstanedione_via_17βHSD1,17βHSD1,DHT,androstanedione,One-way,Postulated,,No redundancy,,
+DHT_to_androstanedione_via_17βHSD10,17βHSD10,DHT,androstanedione,One-way,Postulated,,No redundancy,,
+DHT_to_androstanedione_via_17βHSD2,17βHSD2,DHT,androstanedione,One-way,Established,,No redundancy,,
+P_to_3αDHP_via_DHRS11,DHRS11,P,3αDHP,One-way,Established,,No redundancy,,
+P_to_A4_via_CYP17A1,CYP17A1,P,A4,One-way,Established,,No redundancy,,
+THP_to_5α-pregnan-3;17α-diol-20-one_via_CYP17A1,CYP17A1,THP,5α-pregnan-3;17α-diol-20-one,One-way,Established,,No redundancy,,
+THP_to_allopregnandiol_via_AKR1C1,AKR1C1,THP,allopregnandiol,One-way,Established,,No redundancy,,
