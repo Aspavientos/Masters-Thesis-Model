@@ -78,14 +78,34 @@ for i = 1:length(generxnAss.rxns)
             grules(i) = append(grules(i), ' or ', enz_interest.NameInDiagram(geneid));
         end
     end
+
+    generxnAss = changeGeneAssociation(generxnAss, generxnAss.rxns(i), grules{i});
 end
 
 clear gen i j orig sub prod redun geneid
 %% Edit model metadata
-% kept_fields
-% rmfield
+% Remove non-important fields
+metaModel = generxnAss;
+kept_fields = {'id', ...
+    'mets', 'metNames', 'b', 'csense',  'c', 'lb', 'ub', ...
+    'rxns', 'rxnNames', ...
+    'genes', 'geneNames', 'geneRefSeqID',...
+    'rxnGeneMat', 'grRules', 'rules', 'S'};
+exclude_fields = setdiff(fieldnames(metaModel), kept_fields);
+missing_fields = setdiff(kept_fields, fieldnames(metaModel));
+
+for i = 1:length(missing_fields) % Add missing
+    metaModel.(missing_fields{i}) = [];
+end
+metaModel = rmfield(metaModel, exclude_fields); % Remove extra
+metaModel = orderfields(metaModel, kept_fields); % Order to keep nice
+
+% Add relevant metadata
+metaModel.id = char('Human1-Recon3D Endometrium Subset', 'Developed by: Diego Rodriguez', 'Mail: diegoeldelccm@gmail.com');
 
 %% Perform sanity checks
+verifyModel(metaModel);
+polishedModel = metaModel;
 
 %% Save to file
 % save(['Model files' filesep 'polishedModel.mat'], 'polishedModel');
