@@ -1,7 +1,7 @@
 %% Information
 % Author: Diego Rodriguez Esperante
 % Contact: d.rodriguezesperante@student.maastrichtuniversity.nl
-% Last update: 28/01/2024
+% Last update: 03/03/2024
 
 %clear; clc; close all;
 
@@ -78,7 +78,6 @@ for i = 1:length(generxnAss.rxns)
             grules(i) = append(grules(i), ' or ', enz_interest.NameInDiagram(geneid));
         end
     end
-
     generxnAss = changeGeneAssociation(generxnAss, generxnAss.rxns(i), grules{i});
 end
 
@@ -89,7 +88,7 @@ metaModel = generxnAss;
 kept_fields = {'id', ...
     'mets', 'metNames', 'b', 'csense',  'c', 'lb', 'ub', ...
     'rxns', 'rxnNames', ...
-    'genes', 'geneNames', 'geneRefSeqID',...
+    'genes', 'geneNames', ...
     'rxnGeneMat', 'grRules', 'rules', 'S'};
 exclude_fields = setdiff(fieldnames(metaModel), kept_fields);
 missing_fields = setdiff(kept_fields, fieldnames(metaModel));
