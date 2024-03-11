@@ -3,7 +3,7 @@
 % Contact: d.rodriguezesperante@student.maastrichtuniversity.nl
 % Last update: 28/01/2024
 
-%clear; clc; close all;
+% clear; clc; close all;
 
 %% Initialize
 initCobraToolbox(false);
@@ -34,7 +34,7 @@ mtbs.missing.ids(strcmp(mtbs.missing.names, '')) = [];
 mtbs.missing.names(strcmp(mtbs.missing.names, '')) = [];
 
 % Unnamed (not in either H1 or R3)
-mtbs.unnamed.ids = find((strcmp(mtbs_interest{:, 'Human1'}, '').*strcmp(mtbs_interest{:, 'Recon3D'}, ''))); % Find metabolites with no names in H1 or R3
+mtbs.unnamed.ids = find((strcmp(mtbs_interest{:, 'Human1'}, '') & strcmp(mtbs_interest{:, 'Recon3D'}, ''))); % Find metabolites with no names in H1 or R3
 mtbs.unnamed.names = mtbs_interest{mtbs.unnamed.ids, 'NameInDiagram'};
 
 % Extracted from H1 and R3 but not of interest

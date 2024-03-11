@@ -3,7 +3,7 @@
 % Contact: d.rodriguezesperante@student.maastrichtuniversity.nl
 % Last update: 03/03/2024
 
-%clear; clc; close all;
+% clear; clc; close all;
 
 %% Initialize
 initCobraToolbox(false);
@@ -22,11 +22,11 @@ completeModel = readCbModel(modelFileName);
 % Import gene association data
 enz_interest = readtable(['CSV' filesep 'Reactions - Enzymes.csv'], 'Delimiter', 'comma');
 
-% Import gene association data
+% Import reaction data
 rxns_interest = readtable(['CSV' filesep 'Reactions - Rxn-Sub Pairs.csv']);
 
 clear modelFileName
-%% Find same metabolites in different reactions and sequester them
+%% Find same substrates and products in different reactions and sequester them
 db_mets.pat = contains(completeModel.mets, lettersPattern(3) + digitsPattern(5));
 db_mets.extr = extract(completeModel.mets(db_mets.pat), lettersPattern(3) + digitsPattern(5));
 [db_mets.red, db_mets.red_ia, ~] = unique(db_mets.extr);
@@ -43,8 +43,13 @@ dbadps_mets.pat = contains(modelAllDupes.mets, lettersPattern(3) + digitsPattern
 dbadps_mets.extr = extract(modelAllDupes.mets(dbadps_mets.pat), lettersPattern(3) + digitsPattern(5));
 modelAllDupes.mets(dbadps_mets.pat) = dbadps_mets.extr;
 
-% Merge models
+% Merge models and make sure duplicates are gone
 trueNoDupes = mergeTwoModels(modelNoDupes, modelAllDupes, 1);
+[trueNoDupes, removedRxns] = checkDuplicateRxn(trueNoDupes, 'FR', 1);
+while ~isempty(lastwarn)
+    lastwarn('');
+    [trueNoDupes, removedRxns] = checkDuplicateRxn(trueNoDupes, 'FR', 1);
+end
 
 %% Fix gene-rxn associations
 % Remove previous genes to start from blank slate
@@ -59,10 +64,10 @@ generxnAss = addGenes(generxnAss, gen, 'geneNames', enz_interest.NameInDiagram);
 grules = strings(length(generxnAss.rxns),1);
 for i = 1:length(generxnAss.rxns)
     orig = find(strcmp(rxns_interest.Name, generxnAss.rxns(i)), 1);
-    sub = rxns_interest.Substrate(orig);
-    prod = rxns_interest.Product(orig);
+    sub = rxns_interest.Substrate{orig};
+    prod = rxns_interest.Product{orig};
 
-    redun = find(strcmp(rxns_interest.Substrate, sub).*strcmp(rxns_interest.Product, prod));
+    redun = find(strcmp(rxns_interest.Substrate, sub) & strcmp(rxns_interest.Product, prod));
     geneid = find(strcmp(rxns_interest.Enzyme(redun(1)), enz_interest.NameInDiagram));
     if ~strcmp(enz_interest.EnsemblID(geneid), '')
         grules(i) = enz_interest.EnsemblID(geneid);
@@ -79,6 +84,7 @@ for i = 1:length(generxnAss.rxns)
         end
     end
     generxnAss = changeGeneAssociation(generxnAss, generxnAss.rxns(i), grules{i});
+    generxnAss.rxnNames{i} = [sub ' to ' prod];
 end
 
 clear gen i j orig sub prod redun geneid

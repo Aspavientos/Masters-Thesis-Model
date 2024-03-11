@@ -3,7 +3,7 @@
 % Contact: d.rodriguezesperante@student.maastrichtuniversity.nl
 % Last update: 21/01/2024
 
-%clear; clc; close all;
+% clear; clc; close all;
 
 %% Initialize
 % Following tutorial from: https://opencobra.github.io/cobratoolbox/stable/tutorials/tutorialPFBA.html

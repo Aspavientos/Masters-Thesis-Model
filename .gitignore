@@ -2,3 +2,5 @@
 *.sif
 Network Files/
 CSV/
+Model files/ecoli_core_model.mat
+*.noa
