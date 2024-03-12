@@ -19,7 +19,7 @@ modelFileName = ['Model files' filesep 'H1R3MergedModel.mat'];
 modelFileName= [pwd filesep modelFileName];
 mergedModel = readCbModel(modelFileName);
 
-% Import our mtbs of interest
+% Import our mtbs and rxns of interest
 mtbs_interest = readtable(['CSV' filesep 'Reactions - Metabolites.csv']);
 rxns_interest = readtable(['CSV' filesep 'Reactions - Rxn-Sub Pairs.csv']);
 
@@ -57,8 +57,29 @@ completeModel = addMultipleMetabolites(completeModel, strcat(mtbs.missing.names,
 % Unnamed metabolites
 completeModel = addMultipleMetabolites(completeModel, mtbs.unnamed.names, 'metNames', mtbs_interest{mtbs.unnamed.ids, "NameInDiagram"});
 
+% Remove duplicate metabolites
+modelRemDupes = completeModel;
+patt = contains(modelRemDupes.mets, lettersPattern(3) + digitsPattern(5));
+extr = extract(modelRemDupes.mets(patt), lettersPattern(3) + digitsPattern(5));
+[~, ia, ~] = unique(extr);
+
+tempModel = removeMetabolites(modelRemDupes, modelRemDupes.mets(ia));
+pattTemp = contains(tempModel.mets, lettersPattern(3) + digitsPattern(5));
+extrTemp = extract(tempModel.mets(pattTemp), lettersPattern(3) + digitsPattern(5));
+
+modelUnique = removeMetabolites(modelRemDupes, modelRemDupes.mets(setdiff(1:length(modelRemDupes.mets), ia)));
+pattUnique = contains(modelUnique.mets, lettersPattern(3) + digitsPattern(5));
+extrUnique = extract(modelUnique.mets(pattUnique), lettersPattern(3) + digitsPattern(5));
+
+modelUnique.mets(pattUnique) = extrUnique;
+tempModel.mets(pattTemp) = extrTemp;
+
+completeModel = mergeTwoModels(modelUnique, tempModel);
+
+clear patt extr pattTemp extrTemp pattUnique extrUnique ia
 %% Add reactions
-rxn_list = rxns_interest{strcmp(rxns_interest{:,'Redundancy'}, 'No redundancy'), ["Name", "Enzyme", "Substrate", "Product", "Direction"]};
+[~, ia] = setdiff(rxns_interest{:,"Name"}, completeModel.rxns);
+rxn_list = rxns_interest{ia, ["Name", "Enzyme", "Substrate", "Product", "Direction"]};
 rxn_list = cell2table(rxn_list, "VariableNames", ["Name", "Enzyme", "Substrate", "Product", "Direction"]);
 
 % Design stoichiometric matrix
@@ -78,9 +99,14 @@ end
 % Add reactions to model, add grRules and genes
 completeModel = addMultipleReactions(completeModel, rxn_list{:,"Name"}, mtb_list(:, 2), S_mat);
 
-% Check for duplicates rxns, remove unused genes
-completeModel = checkDuplicateRxn(completeModel, 'S', 1);
+% Remove duplicates rxns, remove unused genes
+[completeModel, removedRxns] = checkDuplicateRxn(completeModel, 'FR', 1);
+while ~isempty(removedRxns)
+    lastwarn('');
+    [completeModel, removedRxns] = checkDuplicateRxn(completeModel, 'FR', 1);
+end
 completeModel = removeUnusedGenes(completeModel);
 
+clear i id ia
 %% Save model to file
 % save(['Model files' filesep 'completeModel.mat'], 'completeModel');

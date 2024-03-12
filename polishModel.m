@@ -19,6 +19,9 @@ modelFileName = ['Model files' filesep 'completeModel.mat'];
 modelFileName = [pwd filesep modelFileName];
 completeModel = readCbModel(modelFileName);
 
+% Import metabolite data
+mtbs_interest = readtable(['CSV' filesep 'Reactions - Metabolites.csv']);
+
 % Import gene association data
 enz_interest = readtable(['CSV' filesep 'Reactions - Enzymes.csv'], 'Delimiter', 'comma');
 
@@ -26,34 +29,15 @@ enz_interest = readtable(['CSV' filesep 'Reactions - Enzymes.csv'], 'Delimiter',
 rxns_interest = readtable(['CSV' filesep 'Reactions - Rxn-Sub Pairs.csv']);
 
 clear modelFileName
-%% Find same substrates and products in different reactions and sequester them
-db_mets.pat = contains(completeModel.mets, lettersPattern(3) + digitsPattern(5));
-db_mets.extr = extract(completeModel.mets(db_mets.pat), lettersPattern(3) + digitsPattern(5));
-[db_mets.red, db_mets.red_ia, ~] = unique(db_mets.extr);
+%% Remove unused metabolites
+mtbs_keep = mtbs_interest{strcmp(mtbs_interest{:,"OfInterest"},'Yes'),'NameInDiagram'};
+[mtbs_rem, ia] = setdiff(completeModel.metNames, mtbs_keep);
 
-% Work with no dupes model
-modelNoDupes = removeMetabolites(completeModel, completeModel.mets(setdiff(1:length(db_mets.extr), db_mets.red_ia)));
-dbndps_mets.pat = contains(modelNoDupes.mets, lettersPattern(3) + digitsPattern(5));
-dbndps_mets.extr = extract(modelNoDupes.mets(dbndps_mets.pat), lettersPattern(3) + digitsPattern(5));
-modelNoDupes.mets(dbndps_mets.pat) = dbndps_mets.extr;
-
-% Work with all dupes model
-modelAllDupes = removeMetabolites(completeModel, completeModel.mets([db_mets.red_ia; find(~db_mets.pat)]));
-dbadps_mets.pat = contains(modelAllDupes.mets, lettersPattern(3) + digitsPattern(5));
-dbadps_mets.extr = extract(modelAllDupes.mets(dbadps_mets.pat), lettersPattern(3) + digitsPattern(5));
-modelAllDupes.mets(dbadps_mets.pat) = dbadps_mets.extr;
-
-% Merge models and make sure duplicates are gone
-trueNoDupes = mergeTwoModels(modelNoDupes, modelAllDupes, 1);
-[trueNoDupes, removedRxns] = checkDuplicateRxn(trueNoDupes, 'FR', 1);
-while ~isempty(lastwarn)
-    lastwarn('');
-    [trueNoDupes, removedRxns] = checkDuplicateRxn(trueNoDupes, 'FR', 1);
-end
+completeModel = removeFieldEntriesForType(completeModel, ia, 'mets', numel(completeModel.mets));
 
 %% Fix gene-rxn associations
 % Remove previous genes to start from blank slate
-generxnAss = removeGenesFromModel(trueNoDupes, trueNoDupes.genes);
+generxnAss = removeGenesFromModel(completeModel, completeModel.genes);
 
 % Add genes of interest
 gen = enz_interest.EnsemblID;
@@ -108,6 +92,7 @@ metaModel = orderfields(metaModel, kept_fields); % Order to keep nice
 % Add relevant metadata
 metaModel.id = char('Human1-Recon3D Endometrium Subset', 'Developed by: Diego Rodriguez', 'Mail: diegoeldelccm@gmail.com');
 
+clear i
 %% Perform sanity checks
 verifyModel(metaModel);
 polishedModel = metaModel;
