@@ -16,15 +16,22 @@ clear solverName solverType
 
 %% Read files
 % Import polished model
-modelFileName = ['Model files' filesep 'polishedModel.mat'];
+folder = 'Model files';
+modelFileName = [folder filesep 'polishedModel.mat'];
 modelFileName = [pwd filesep modelFileName];
 displayModel = readCbModel(modelFileName);
 
-clear modelFileName
+clear modelFileName folder
 
 %% Output network in Cytoscape
-folder = 'Network files';
-outputNetworkCytoscape(displayModel, [folder filesep 'networkDisplay'], ...
+filename = 'networkDisplay';
+folder = ['Network files' filesep filename];
+
+if ~exist(folder, 'dir')
+    mkdir(folder);
+end
+
+outputNetworkCytoscape(displayModel, [folder filesep filename], ...
     displayModel.rxns, displayModel.rxnNames, ...
     displayModel.mets, displayModel.metNames);
 
@@ -36,4 +43,4 @@ tablegenes = table(displayModel.genes, repmat({'gene'}, length(displayModel.gene
 
 totaltable = [tablemets; tablerxns; tablegenes];
 
-writetable(totaltable, [folder filesep 'NodeData.csv']);
+writetable(totaltable, [folder filesep filename '_NodeData.csv']);

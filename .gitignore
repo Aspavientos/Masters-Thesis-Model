@@ -1,6 +1,6 @@
 *.asv
 *.sif
 Network Files/
-CSV/
+CSV/Expression data
 Model files/ecoli_core_model.mat
 *.noa
