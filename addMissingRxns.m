@@ -50,15 +50,15 @@ rxns.missing.names(strcmp(rxns.missing.names, '')) = [];
 [rxns.extra.names, rxns.extra.ids] = setdiff(mergedModel.rxns, rxns_interest{:,"Database"});
 
 %% Add metabolite information
-completeModel = mergedModel;
+addedModel = mergedModel;
 % Missing metabolites
-completeModel = addMultipleMetabolites(completeModel, strcat(mtbs.missing.names, 'c'), 'metNames', mtbs_interest{mtbs.missing.ids, "NameInDiagram"});
+addedModel = addMultipleMetabolites(addedModel, strcat(mtbs.missing.names, 'c'), 'metNames', mtbs_interest{mtbs.missing.ids, "NameInDiagram"});
 
 % Unnamed metabolites
-completeModel = addMultipleMetabolites(completeModel, mtbs.unnamed.names, 'metNames', mtbs_interest{mtbs.unnamed.ids, "NameInDiagram"});
+addedModel = addMultipleMetabolites(addedModel, mtbs.unnamed.names, 'metNames', mtbs_interest{mtbs.unnamed.ids, "NameInDiagram"});
 
 % Remove duplicate metabolites
-modelRemDupes = completeModel;
+modelRemDupes = addedModel;
 patt = contains(modelRemDupes.mets, lettersPattern(3) + digitsPattern(5));
 extr = extract(modelRemDupes.mets(patt), lettersPattern(3) + digitsPattern(5));
 [~, ia, ~] = unique(extr);
@@ -74,11 +74,11 @@ extrUnique = extract(modelUnique.mets(pattUnique), lettersPattern(3) + digitsPat
 modelUnique.mets(pattUnique) = extrUnique;
 tempModel.mets(pattTemp) = extrTemp;
 
-completeModel = mergeTwoModels(modelUnique, tempModel);
+addedModel = mergeTwoModels(modelUnique, tempModel);
 
 clear patt extr pattTemp extrTemp pattUnique extrUnique ia
 %% Add reactions
-[~, ia] = setdiff(rxns_interest{:,"Name"}, completeModel.rxns);
+[~, ia] = setdiff(rxns_interest{:,"Name"}, addedModel.rxns);
 rxn_list = rxns_interest{ia, ["Name", "Enzyme", "Substrate", "Product", "Direction"]};
 rxn_list = cell2table(rxn_list, "VariableNames", ["Name", "Enzyme", "Substrate", "Product", "Direction"]);
 
@@ -86,8 +86,8 @@ rxn_list = cell2table(rxn_list, "VariableNames", ["Name", "Enzyme", "Substrate",
 mtb_list = unique([rxn_list{:, 'Substrate'}; rxn_list{:, 'Product'}]);
 mtb_list = [mtb_list, strings(length(mtb_list), 1)];
 for i = 1:length(mtb_list)
-    id = find(strcmp(mtb_list(i, 1), completeModel.metNames), 1);
-    mtb_list(i, 2) = completeModel.mets(id);
+    id = find(strcmp(mtb_list(i, 1), addedModel.metNames), 1);
+    mtb_list(i, 2) = addedModel.mets(id);
 end
 
 S_mat = zeros(length(mtb_list), height(rxn_list));
@@ -97,13 +97,12 @@ for i = 1:length(mtb_list)
 end
 
 % Add reactions to model, add grRules and genes
-completeModel = addMultipleReactions(completeModel, rxn_list{:,"Name"}, mtb_list(:, 2), S_mat);
+addedModel = addMultipleReactions(addedModel, rxn_list{:,"Name"}, mtb_list(:, 2), S_mat);
 
 % Remove duplicates rxns, remove unused genes
-[completeModel, removedRxns] = checkDuplicateRxn(completeModel, 'FR', 1);
+[completeModel, removedRxns] = checkDuplicateRxn(addedModel, 'S', 1);
 while ~isempty(removedRxns)
-    lastwarn('');
-    [completeModel, removedRxns] = checkDuplicateRxn(completeModel, 'FR', 1);
+    [completeModel, removedRxns] = checkDuplicateRxn(completeModel, 'S', 1);
 end
 completeModel = removeUnusedGenes(completeModel);
 

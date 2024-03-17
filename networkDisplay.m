@@ -16,10 +16,14 @@ clear solverName solverType
 
 %% Read files
 % Import polished model
-folder = 'Model files';
-modelFileName = [folder filesep 'polishedModel.mat'];
+folder = 'Model files/Flux balance results';
+modelFileName = [folder filesep 'Ectopic_PlusMaxMinusMax.mat'];
 modelFileName = [pwd filesep modelFileName];
 displayModel = readCbModel(modelFileName);
+
+if(isfield(displayModel, 'subSystems'))
+    displayModel = rmfield(displayModel, 'subSystems');
+end
 
 clear modelFileName folder
 
