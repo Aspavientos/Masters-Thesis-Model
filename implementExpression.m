@@ -35,7 +35,7 @@ clear modelFileName folder
 genelist = findGenesFromRxns(polishedModel, polishedModel.rxns);
 
 % Meaningful data
-subgroup = strcmp(expA_meta{:,"Ectopic"}, 'FALSE');
+subgroup = strcmp(expA_meta{:,"Ectopic"}, 'TRUE');
 exprData.gene = expA_data(:,2:end).Properties.VariableNames';
 exprData.med = median(expA_data{subgroup,2:end})';
 exprData.max = max(expA_data{subgroup,2:end})';
@@ -45,7 +45,7 @@ exprData.min = min(expA_data{subgroup,2:end})';
 sourcemet = 'MAM01450';
 
 % Sink metabolites and objective reactions
-sinkmet = 'MAM01787';
+sinkmet = '3αDIOL';
 objctv = ['sink_' sinkmet];
 
 %% Pseudo eFlux
@@ -58,7 +58,7 @@ boundaryModel = changeRxnBounds(boundaryModel, boundaryModel.rxns, -10000, 'l');
 [expr_max, ~] = selectGeneFromGPR(boundaryModel, exprData.gene, exprData.max, GPRparser(boundaryModel));
 [expr_min, ~] = selectGeneFromGPR(boundaryModel, exprData.gene, exprData.min, GPRparser(boundaryModel));
 boundaryModel = changeRxnBounds(boundaryModel, boundaryModel.rxns, expr_max, 'u');
-boundaryModel = changeRxnBounds(boundaryModel, boundaryModel.rxns, -expr_max, 'l');
+boundaryModel = changeRxnBounds(boundaryModel, boundaryModel.rxns, 0, 'l');
 
 % Add demand/sink reactions
 boundaryModel = addSinkReactions(boundaryModel, sinkmet, -10000, 10000);
@@ -75,9 +75,13 @@ bound_v_sol = [boundaryModel.ub, optCB_sol.v];
 printFluxVector(boundaryModel, optCB_sol.v, 1)
 
 % Save results to csv
-folder = ['CSV' filesep 'Flux Balance Results'];
-cohort = 'NonEctopic';
-test = 'PlusMaxMinusMax';
+folder = ['CSV' filesep 'Flux Balance Results' filesep objctv];
+if ~exist(folder, 'dir')
+    mkdir(folder);
+end
+
+cohort = 'Ectopic';
+test = 'PlusMaxZero';
 name = [cohort '_' test];
 
 nodes = [boundaryModel.rxns; boundaryModel.mets];
@@ -90,5 +94,8 @@ writetable(csv_table, [folder filesep name '_fluxBalance.csv']);
 writecell(nodes, [folder filesep 'Nodelist.csv']);
 
 % Save model for display later
-folder = ['Model files' filesep 'Flux Balance Results'];
+folder = ['Model files' filesep 'Flux Balance Results' filesep objctv];
+if ~exist(folder, 'dir')
+    mkdir(folder);
+end
 save([folder filesep name '.mat'], 'boundaryModel');

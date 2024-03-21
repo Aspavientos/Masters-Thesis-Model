@@ -2,5 +2,7 @@
 *.sif
 Network Files/
 CSV/Expression data
+CSV/Flux Balance Results
 Model files/ecoli_core_model.mat
+Model files/Flux Balance Results
 *.noa
