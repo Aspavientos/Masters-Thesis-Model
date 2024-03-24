@@ -15,6 +15,7 @@ solverType = 'LP';
 changeCobraSolver(solverName, solverType);
 
 clear solverName solverType
+
 %% Read files
 % Import polished model
 modelFileName = ['Model files' filesep 'polishedModel.mat'];
@@ -23,31 +24,38 @@ polishedModel = readCbModel(modelFileName);
 
 % Experimental data
 folder = ['CSV' filesep 'Expression data'];
-expA_data = readtable([folder filesep 'exprA_ENSEMBL.csv']);
-expA_meta = readtable([folder filesep 'exprA_meta.csv'], 'TextType','string');
+file_data = [folder filesep 'GDS5211_expr.csv'];
+file_meta = [folder filesep 'GDS5211_meta.csv'];
+
+opts_data = detectImportOptions(file_data);
+[opts_data.VariableTypes{2:end}] = deal('double');
+
+exp_data = readtable(file_data, opts_data);
+exp_meta = readtable(file_meta, 'TextType','string');
 
 % Model construction data
 rxns_interest = readtable(['CSV' filesep 'Reactions - Rxn-Sub Pairs.csv']);
 
-clear modelFileName folder
+clear modelFileName folder opts_data file_meta file_data
 %% Common information
 % List of genes
 genelist = findGenesFromRxns(polishedModel, polishedModel.rxns);
 
 % Meaningful data
-subgroup = strcmp(expA_meta{:,"Ectopic"}, 'TRUE');
-exprData.gene = expA_data(:,2:end).Properties.VariableNames';
-exprData.med = median(expA_data{subgroup,2:end})';
-exprData.max = max(expA_data{subgroup,2:end})';
-exprData.min = min(expA_data{subgroup,2:end})';
+subgroup = strcmp(exp_meta{:,"TurnerSyndrome"}, 'normal euploid');
+exprData.gene = exp_data(:,2:end).Properties.VariableNames';
+exprData.med = median(exp_data{subgroup,2:end}, "omitnan")';
+exprData.max = max(exp_data{subgroup,2:end}, [], "omitnan")';
+exprData.min = min(exp_data{subgroup,2:end}, [], "omitnan")';
 
 % Source metabolites and objective reactions
-sourcemet = 'MAM01450';
+sourcemet = {'MAM01450', 'MAM01660'};
 
 % Sink metabolites and objective reactions
-sinkmet = '3αDIOL';
-objctv = ['sink_' sinkmet];
+sinkmet = {'MAM01338'};
+objctv = strcat('sink_', sinkmet{1});
 
+clear subgroup
 %% Pseudo eFlux
 % Set all default bounds
 boundaryModel = changeRxnBounds(polishedModel, polishedModel.rxns, 10000, 'u');
@@ -61,9 +69,12 @@ boundaryModel = changeRxnBounds(boundaryModel, boundaryModel.rxns, expr_max, 'u'
 boundaryModel = changeRxnBounds(boundaryModel, boundaryModel.rxns, 0, 'l');
 
 % Add demand/sink reactions
-boundaryModel = addSinkReactions(boundaryModel, sinkmet, -10000, 10000);
-boundaryModel = addSinkReactions(boundaryModel, sourcemet, -10000, 10000);
-
+for i = 1:length(sourcemet)
+    boundaryModel = addSinkReactions(boundaryModel, sourcemet{i}, -10000, 0);
+end
+for i = 1:length(sinkmet)
+    boundaryModel = addSinkReactions(boundaryModel, sinkmet{i}, 0, 10000);
+end
 % Change objective function
 boundaryModel = changeObjective(boundaryModel, objctv);
 
@@ -74,28 +85,32 @@ optCB_sol = optimizeCbModel(boundaryModel, 'max');
 bound_v_sol = [boundaryModel.ub, optCB_sol.v];
 printFluxVector(boundaryModel, optCB_sol.v, 1)
 
+clear sinkmet sourcemet objctv 
+%% Save data
 % Save results to csv
-folder = ['CSV' filesep 'Flux Balance Results' filesep objctv];
+experiment = 'expTurn';
+cohort = 'NotTurner';
+test = 'ChoDHEA-sinkAN';
+foldername = [experiment '_' test];
+filename = [experiment '_' cohort '_' test];
+
+folder = ['CSV' filesep 'Flux Balance Results' filesep foldername];
 if ~exist(folder, 'dir')
     mkdir(folder);
 end
-
-cohort = 'Ectopic';
-test = 'PlusMaxZero';
-name = [cohort '_' test];
-
-nodes = [boundaryModel.rxns; boundaryModel.mets];
 
 fract = optCB_sol.v./boundaryModel.ub;
 fract(isnan(fract)) = 0;
-csv_table = table(boundaryModel.rxns, boundaryModel.ub, optCB_sol.v, fract, 'VariableNames', {'Reactions', 'Upper bounds', 'Flux Balance', 'Fraction'});
+csv_table = table(boundaryModel.rxns, boundaryModel.ub, optCB_sol.v, fract, ...
+    'VariableNames', {'Reactions', ['UB ' cohort], ['FBA ' cohort], ['Frc ' cohort]});
 
-writetable(csv_table, [folder filesep name '_fluxBalance.csv']);
-writecell(nodes, [folder filesep 'Nodelist.csv']);
+writetable(csv_table, [folder filesep filename '_FBA.csv']);
 
 % Save model for display later
-folder = ['Model files' filesep 'Flux Balance Results' filesep objctv];
+folder = ['Model files' filesep 'Flux Balance Results' filesep foldername];
 if ~exist(folder, 'dir')
     mkdir(folder);
 end
-save([folder filesep name '.mat'], 'boundaryModel');
+save([folder filesep filename '.mat'], 'boundaryModel');
+
+clear experiment cohort test filename folder fract i

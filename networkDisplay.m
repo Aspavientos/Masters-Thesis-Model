@@ -16,8 +16,10 @@ clear solverName solverType
 
 %% Read files
 % Import polished model
-folder = 'Model files/Flux balance results';
-modelFileName = [folder filesep 'Ectopic_PlusMaxMinusMax.mat'];
+foldername = 'expTurn_ChoDHEA-sinkAN';
+filename = 'expTurn_Turner_ChoDHEA-sinkAN';
+folder = ['Model files' filesep 'Flux balance results' filesep foldername];
+modelFileName = [folder filesep filename '.mat'];
 modelFileName = [pwd filesep modelFileName];
 displayModel = readCbModel(modelFileName);
 
@@ -29,15 +31,17 @@ clear modelFileName folder
 
 %% Output network in Cytoscape
 filename = 'networkDisplay';
-folder = ['Network files' filesep filename];
+folder = ['Network files' filesep filename filesep foldername];
 
 if ~exist(folder, 'dir')
     mkdir(folder);
 end
 
-outputNetworkCytoscape(displayModel, [folder filesep filename], ...
-    displayModel.rxns, displayModel.rxnNames, ...
-    displayModel.mets, displayModel.metNames);
+outputNetworkCytoscape(displayModel, [folder filesep filename]);
+
+% outputNetworkCytoscape(displayModel, [folder filesep filename], ...
+%     displayModel.rxns, displayModel.rxnNames, ...
+%     displayModel.mets, displayModel.metNames);
 
 % Cytoscape node data
 varnames = {'Node', 'Type', 'ProperName'};
