@@ -24,32 +24,37 @@ polishedModel = readCbModel(modelFileName);
 
 % Experimental data
 folder = ['CSV' filesep 'Expression data'];
-file_data = [folder filesep 'GDS5211_expr.csv'];
-file_meta = [folder filesep 'GDS5211_meta.csv'];
+file_data = [folder filesep 'GTEx_expr.csv'];
+file_meta = [folder filesep 'GTEx_meta.csv'];
 
 opts_data = detectImportOptions(file_data);
 [opts_data.VariableTypes{2:end}] = deal('double');
 
 exp_data = readtable(file_data, opts_data);
-exp_meta = readtable(file_meta, 'TextType','string');
+exp_meta = readtable(file_meta, 'TextType','string', 'NumHeaderLines', 0, 'Delimiter', 'comma');
 
 % Model construction data
 rxns_interest = readtable(['CSV' filesep 'Reactions - Rxn-Sub Pairs.csv']);
 
 clear modelFileName folder opts_data file_meta file_data
 %% Common information
+% Choose experiment options
+experiment = 'expGTEx';
+cohort = 'Skin';
+test = 'Cho-sinkAN';
+
 % List of genes
 genelist = findGenesFromRxns(polishedModel, polishedModel.rxns);
 
-% Meaningful data
-subgroup = strcmp(exp_meta{:,"TurnerSyndrome"}, 'normal euploid');
+% Aggregate experimental data according to cohorts
+subgroup = strcmp(exp_meta{:,"Tissue"}, cohort);
 exprData.gene = exp_data(:,2:end).Properties.VariableNames';
-exprData.med = median(exp_data{subgroup,2:end}, "omitnan")';
-exprData.max = max(exp_data{subgroup,2:end}, [], "omitnan")';
-exprData.min = min(exp_data{subgroup,2:end}, [], "omitnan")';
+exprData.med = median(exp_data{subgroup,2:end}, 1, "omitnan")';
+exprData.max = max(exp_data{subgroup,2:end}, [], 1, "omitnan")';
+exprData.min = min(exp_data{subgroup,2:end}, [], 1, "omitnan")';
 
 % Source metabolites and objective reactions
-sourcemet = {'MAM01450', 'MAM01660'};
+sourcemet = {'MAM01450'};
 
 % Sink metabolites and objective reactions
 sinkmet = {'MAM01338'};
@@ -88,9 +93,6 @@ printFluxVector(boundaryModel, optCB_sol.v, 1)
 clear sinkmet sourcemet objctv 
 %% Save data
 % Save results to csv
-experiment = 'expTurn';
-cohort = 'NotTurner';
-test = 'ChoDHEA-sinkAN';
 foldername = [experiment '_' test];
 filename = [experiment '_' cohort '_' test];
 
