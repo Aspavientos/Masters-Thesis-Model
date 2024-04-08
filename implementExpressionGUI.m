@@ -25,44 +25,78 @@ exp_meta = readtable(file_meta, 'TextType','string', 'NumHeaderLines', 0, 'Delim
 % Model construction data
 rxns_interest = readtable(['CSV' filesep 'Reactions - Rxn-Sub Pairs.csv']);
 
-clear modelFileName folder opts_data file_meta file_data
-
 
 
 %% Select metadata options
-fig = uifigure('Name', 'My GUI', 'NumberTitle', 'off', 'Position', [100 100 300 200]);
+clear; clc;
+fig = uifigure('Name', 'My GUI', 'NumberTitle', 'off', 'Position', [100 100 400 250]);
+fig.UserData = struct('Model', [], 'Data', [], 'Meta', []);
 
 % Create a panel to hold the buttons and labels
 gridLayout = uigridlayout(fig, [7 2]);
 gridLayout.ColumnWidth = {'1x', 'fit'};
 gridLayout.RowHeight = {'fit', 'fit', 'fit', 'fit', 'fit', 'fit', 'fit'};
-gridLayout.Layout.Row = [1 2 2 3 4 4 5 6 6 7];
-gridLayout.Layout.Column = [1 1 2 1 1 2 1 1 2 2];
 
 % Model elements
-labelModelTitle = uilabel(gridLayout, 'Position', [1 1], 'Text', 'Label 1');
-labelModel = uilabel(gridLayout, 'Position', [1 1], 'Text', 'Label 1');
-buttonModel = uibutton(gridLayout, 'Text', 'File...');
+labelModelTitle = uilabel(gridLayout, 'Text', 'MODEL TITLE', ...
+    'FontSize', 16, 'FontWeight','bold');
+labelModelTitle.Layout.Column = [1,2];
+labelModel = uilabel(gridLayout, 'Text', 'Select Model');
+buttonModel = uibutton(gridLayout, 'Text', 'File...', 'Tag', 'Model');
 
 % Data elements
-labelDataTitle = uilabel(gridLayout, 'Position', [120 50 100 30], 'Text', 'Label 2');
-labelData = uilabel(gridLayout, 'Position', [120 50 100 30], 'Text', 'Label 2');
-buttonData = uibutton(gridLayout, 'Position', [10 50 100 30], 'Text', 'File...');
+labelDataTitle = uilabel(gridLayout, 'Text', 'DATA TITLE', ...
+    'FontSize', 16, 'FontWeight','bold');
+labelDataTitle.Layout.Column = [1,2];
+labelData = uilabel(gridLayout, 'Text', 'Select Data');
+buttonData = uibutton(gridLayout, 'Text', 'File...', 'Tag', 'Data');
 
 % Meta elemenets
-labelMetaTitle = uilabel(gridLayout, 'Position', [120 90 100 30], 'Text', 'Label 3');
-labelMeta = uilabel(gridLayout, 'Position', [120 90 100 30], 'Text', 'Label 3');
-buttonMeta = uibutton(gridLayout, 'Position', [10 90 100 30], 'Text', 'File...');
+labelMetaTitle = uilabel(gridLayout,'Text', 'META TITLE', ...
+    'FontSize', 16, 'FontWeight','bold');
+labelMetaTitle.Layout.Column = [1,2];
+labelMeta = uilabel(gridLayout, 'Text', 'Select Meta');
+buttonMeta = uibutton(gridLayout, 'Text', 'File...', 'Tag', 'Meta');
+
+% Next button
+buttonNext = uibutton(gridLayout, 'Text', 'Next');
+buttonNext.Layout.Column = [1,2];
 
 % Add callbacks to the buttons
-set(buttonModel, 'ButtonPushedFcn', @(src, event) updateLabel(src, labelModel));
-set(buttonData, 'ButtonPushedFcn', @(src, event) updateLabel(src, labelData));
-set(buttonMeta, 'ButtonPushedFcn', @(src, event) updateLabel(src, labelMeta));
+set(buttonModel, 'ButtonPushedFcn', @(src, event) selectFile(src, labelModel, fig));
+set(buttonData, 'ButtonPushedFcn', @(src, event) selectFile(src, labelData, fig));
+set(buttonMeta, 'ButtonPushedFcn', @(src, event) selectFile(src, labelMeta, fig));
+set(buttonNext, 'ButtonPushedFcn', @(src, event) continueNext(src, fig));
 
-% Function to update the label text
-function updateLabel(src, label)
-    disp('Click!')
+% Functions
+function selectFile(src, label, figure)
+    [file, path] = uigetfile('*.*');
+    if file == 0
+        return
+    end
+    set(label, 'Text', file, 'FontAngle', 'italic', 'FontColor', 'b');
+    new_struct = figure.UserData;
+    new_struct.(src.Tag) = {file, path};
+    set(figure, 'UserData' , new_struct);
+    disp([src.Tag ' selected!'])
 end
 
+function continueNext(src, figure)
+    if any(structfun(@isempty, figure.UserData))
+        set(src, 'Text', 'Please select all files', 'FontColor', 'r');
+        %return
+    end
+    set(src, 'Text', 'Loading...', 'Enable', 'off');
+    try
+        prepareTest();
+    catch
+        initCobraToolbox(false);
+        solverName = 'glpk';
+        solverType = 'LP';
+        changeCobraSolver(solverName, solverType);
+    end
+    modelFileName = [figure.UserData.Model{2} figure.UserData.Model{1}];
+    polishedModel = readCbModel(modelFileName);
+end
 
 %% Select network & generate network

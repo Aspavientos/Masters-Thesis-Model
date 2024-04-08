@@ -93,7 +93,7 @@ printFluxVector(boundaryModel, optCB_sol.v, 1)
 clear sinkmet sourcemet objctv 
 %% Save data
 % Save results to csv
-foldername = [experiment '_' test];
+foldername = test;
 filename = [experiment '_' cohort '_' test];
 
 folder = ['CSV' filesep 'Flux Balance Results' filesep foldername];
