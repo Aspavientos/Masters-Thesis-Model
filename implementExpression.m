@@ -40,8 +40,8 @@ clear modelFileName folder opts_data file_meta file_data
 %% Common information
 % Choose experiment options
 experiment = 'expGTEx';
-cohort = 'Skin';
-test = 'Cho-sinkAN';
+cohort = 'Adrenal';
+test = 'Cho-DRAIN';
 
 % List of genes
 genelist = findGenesFromRxns(polishedModel, polishedModel.rxns);
@@ -57,8 +57,8 @@ exprData.min = min(exp_data{subgroup,2:end}, [], 1, "omitnan")';
 sourcemet = {'MAM01450'};
 
 % Sink metabolites and objective reactions
-sinkmet = {'MAM01338'};
-objctv = strcat('sink_', sinkmet{1});
+sinkmet = {'MAM01338', 'MAM02969', 'MAM01787', 'MAM01069', 'MAM01615', '3αDIOL', '3βDIOL', 'MAM01614', 'allopregnandiol'};
+objctv = strcat('sink_DRAIN');
 
 clear subgroup
 %% Pseudo eFlux
@@ -73,13 +73,21 @@ boundaryModel = changeRxnBounds(boundaryModel, boundaryModel.rxns, -10000, 'l');
 boundaryModel = changeRxnBounds(boundaryModel, boundaryModel.rxns, expr_max, 'u');
 boundaryModel = changeRxnBounds(boundaryModel, boundaryModel.rxns, 0, 'l');
 
-% Add demand/sink reactions
+% Add demand reactions
 for i = 1:length(sourcemet)
     boundaryModel = addSinkReactions(boundaryModel, sourcemet{i}, -10000, 0);
 end
-for i = 1:length(sinkmet)
-    boundaryModel = addSinkReactions(boundaryModel, sinkmet{i}, 0, 10000);
-end
+
+% Add sink reactions all connected to a joined faucet reaction
+boundaryModel = addMetabolite(boundaryModel, 'DRAIN', 'DRAIN');
+boundaryModel = addMultipleReactions(boundaryModel, strcat({'drain_'}, sinkmet), [sinkmet 'DRAIN'], [-eye(length(sinkmet)); ones(1, length(sinkmet))]);
+boundaryModel = addSinkReactions(boundaryModel, 'DRAIN', 0, 10000);
+
+% Without faucet reactions
+% for i = 1:length(sinkmet)
+%     boundaryModel = addReaction(boundaryModel, sinkmet{i}, 0, 10000);
+% end
+
 % Change objective function
 boundaryModel = changeObjective(boundaryModel, objctv);
 

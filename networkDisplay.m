@@ -16,22 +16,19 @@ clear solverName solverType
 
 %% Read files
 % Import polished model
-foldername = 'expTurn_ChoDHEA-sinkAN';
-filename = 'expTurn_Turner_ChoDHEA-sinkAN';
-folder = ['Model files' filesep 'Flux balance results' filesep foldername];
-modelFileName = [folder filesep filename '.mat'];
-modelFileName = [pwd filesep modelFileName];
+[filename, pathname] = uigetfile();
+modelFileName = [pathname filename];
 displayModel = readCbModel(modelFileName);
 
 if(isfield(displayModel, 'subSystems'))
     displayModel = rmfield(displayModel, 'subSystems');
 end
 
-clear modelFileName folder
-
+clear modelFileName
 %% Output network in Cytoscape
 filename = 'networkDisplay';
-folder = ['Network files' filesep filename filesep foldername];
+folder_sub = regexp(pathname,'\','split');
+folder = ['Network files' filesep filename filesep folder_sub{end-1}];
 
 if ~exist(folder, 'dir')
     mkdir(folder);
@@ -52,3 +49,5 @@ tablegenes = table(displayModel.genes, repmat({'gene'}, length(displayModel.gene
 totaltable = [tablemets; tablerxns; tablegenes];
 
 writetable(totaltable, [folder filesep filename '_NodeData.csv']);
+
+clear filename pathname folder folder_sub varnames

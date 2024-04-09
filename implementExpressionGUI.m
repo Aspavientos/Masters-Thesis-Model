@@ -84,7 +84,7 @@ end
 function continueNext(src, figure)
     if any(structfun(@isempty, figure.UserData))
         set(src, 'Text', 'Please select all files', 'FontColor', 'r');
-        %return
+        return
     end
     set(src, 'Text', 'Loading...', 'Enable', 'off');
     try
