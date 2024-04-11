@@ -24,8 +24,8 @@ polishedModel = readCbModel(modelFileName);
 
 % Experimental data
 folder = ['CSV' filesep 'Expression data'];
-file_data = [folder filesep 'GTEx_expr.csv'];
-file_meta = [folder filesep 'GTEx_meta.csv'];
+file_data = [folder filesep 'exprA_ENSEMBL.csv'];
+file_meta = [folder filesep 'exprA_meta.csv'];
 
 opts_data = detectImportOptions(file_data);
 [opts_data.VariableTypes{2:end}] = deal('double');
@@ -39,15 +39,15 @@ rxns_interest = readtable(['CSV' filesep 'Reactions - Rxn-Sub Pairs.csv']);
 clear modelFileName folder opts_data file_meta file_data
 %% Common information
 % Choose experiment options
-experiment = 'expGTEx';
-cohort = 'Adrenal';
-test = 'Cho-DRAIN';
+experiment = 'expA';
+cohort = 'Ectopic';
+test = 'Cho-DRAINv2';
 
 % List of genes
 genelist = findGenesFromRxns(polishedModel, polishedModel.rxns);
 
 % Aggregate experimental data according to cohorts
-subgroup = strcmp(exp_meta{:,"Tissue"}, cohort);
+subgroup = strcmp(exp_meta{:,"Ectopic"}, 'TRUE');
 exprData.gene = exp_data(:,2:end).Properties.VariableNames';
 exprData.med = median(exp_data{subgroup,2:end}, 1, "omitnan")';
 exprData.max = max(exp_data{subgroup,2:end}, [], 1, "omitnan")';
@@ -57,8 +57,8 @@ exprData.min = min(exp_data{subgroup,2:end}, [], 1, "omitnan")';
 sourcemet = {'MAM01450'};
 
 % Sink metabolites and objective reactions
-sinkmet = {'MAM01338', 'MAM02969', 'MAM01787', 'MAM01069', 'MAM01615', '3αDIOL', '3βDIOL', 'MAM01614', 'allopregnandiol'};
-objctv = strcat('sink_DRAIN');
+sinkmet = {'MAM01338', 'MAM02969', 'MAM01787', 'MAM01069', 'MAM01615', '3αDIOL', '3βDIOL', 'allopregnandiol'};
+objctv = strcat('drain_3αDIOL');
 
 clear subgroup
 %% Pseudo eFlux
@@ -70,7 +70,7 @@ boundaryModel = changeRxnBounds(boundaryModel, boundaryModel.rxns, -10000, 'l');
 [expr_med, ~] = selectGeneFromGPR(boundaryModel, exprData.gene, exprData.med, GPRparser(boundaryModel));
 [expr_max, ~] = selectGeneFromGPR(boundaryModel, exprData.gene, exprData.max, GPRparser(boundaryModel));
 [expr_min, ~] = selectGeneFromGPR(boundaryModel, exprData.gene, exprData.min, GPRparser(boundaryModel));
-boundaryModel = changeRxnBounds(boundaryModel, boundaryModel.rxns, expr_max, 'u');
+boundaryModel = changeRxnBounds(boundaryModel, boundaryModel.rxns, expr_med, 'u');
 boundaryModel = changeRxnBounds(boundaryModel, boundaryModel.rxns, 0, 'l');
 
 % Add demand reactions
@@ -81,6 +81,8 @@ end
 % Add sink reactions all connected to a joined faucet reaction
 boundaryModel = addMetabolite(boundaryModel, 'DRAIN', 'DRAIN');
 boundaryModel = addMultipleReactions(boundaryModel, strcat({'drain_'}, sinkmet), [sinkmet 'DRAIN'], [-eye(length(sinkmet)); ones(1, length(sinkmet))]);
+boundaryModel = changeRxnBounds(boundaryModel, strcat({'drain_'}, sinkmet), 10000, 'u');
+boundaryModel = changeRxnBounds(boundaryModel, strcat({'drain_'}, sinkmet), 0, 'l');
 boundaryModel = addSinkReactions(boundaryModel, 'DRAIN', 0, 10000);
 
 % Without faucet reactions
@@ -111,8 +113,8 @@ end
 
 fract = optCB_sol.v./boundaryModel.ub;
 fract(isnan(fract)) = 0;
-csv_table = table(boundaryModel.rxns, boundaryModel.ub, optCB_sol.v, fract, ...
-    'VariableNames', {'Reactions', ['UB ' cohort], ['FBA ' cohort], ['Frc ' cohort]});
+csv_table = table(boundaryModel.rxns, boundaryModel.ub, optCB_sol.v, ...
+    'VariableNames', {'Reactions', ['UB ' cohort], ['FBA ' cohort]});
 
 writetable(csv_table, [folder filesep filename '_FBA.csv']);
 
