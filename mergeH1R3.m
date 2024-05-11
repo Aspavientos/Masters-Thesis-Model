@@ -7,12 +7,16 @@
 
 %% Initialize
 % Following tutorial from: https://opencobra.github.io/cobratoolbox/stable/tutorials/tutorialPFBA.html
-initCobraToolbox(false);
+try prepareTest()
+catch
+    initCobraToolbox(false);
 
-solverName = 'glpk';
-solverType = 'LP';
-changeCobraSolver(solverName, solverType);
+    solverName = 'glpk';
+    solverType = 'LP';
+    changeCobraSolver(solverName, solverType);
 
+    clear solverName solverType
+end
 %% Read files
 addpath(pwd);
 
@@ -93,4 +97,4 @@ for i = 1:length(merge_mets)
 end
 
 %% Save model to file
-% save(['Model files' filesep 'H1R3MergedModel.mat'], 'mergedModel');
+save(['Model files' filesep 'H1R3MergedModel.mat'], 'mergedModel');

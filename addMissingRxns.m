@@ -6,13 +6,16 @@
 % clear; clc; close all;
 
 %% Initialize
-initCobraToolbox(false);
+try prepareTest()
+catch
+    initCobraToolbox(false);
 
-solverName = 'glpk';
-solverType = 'LP';
-changeCobraSolver(solverName, solverType);
+    solverName = 'glpk';
+    solverType = 'LP';
+    changeCobraSolver(solverName, solverType);
 
-clear solverName solverType
+    clear solverName solverType
+end
 %% Read files
 % Import Merged model
 modelFileName = ['Model files' filesep 'H1R3MergedModel.mat'];
@@ -108,4 +111,4 @@ completeModel = removeUnusedGenes(completeModel);
 
 clear i id ia
 %% Save model to file
-% save(['Model files' filesep 'completeModel.mat'], 'completeModel');
+save(['Model files' filesep 'completeModel.mat'], 'completeModel');

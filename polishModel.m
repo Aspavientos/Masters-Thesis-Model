@@ -6,13 +6,16 @@
 % clear; clc; close all;
 
 %% Initialize
-initCobraToolbox(false);
+try prepareTest()
+catch
+    initCobraToolbox(false);
 
-solverName = 'glpk';
-solverType = 'LP';
-changeCobraSolver(solverName, solverType);
+    solverName = 'glpk';
+    solverType = 'LP';
+    changeCobraSolver(solverName, solverType);
 
-clear solverName solverType
+    clear solverName solverType
+end
 %% Read files
 % Import complete model
 modelFileName = ['Model files' filesep 'completeModel.mat'];
@@ -78,7 +81,7 @@ metaModel = generxnAss;
 kept_fields = {'id', ...
     'mets', 'metNames', 'b', 'csense',  'c', 'lb', 'ub', ...
     'rxns', 'rxnNames', ...
-    'genes', 'geneNames', ...
+    'genes', 'geneNames', 'geneHGNC',...
     'rxnGeneMat', 'grRules', 'rules', 'S'};
 exclude_fields = setdiff(fieldnames(metaModel), kept_fields);
 missing_fields = setdiff(kept_fields, fieldnames(metaModel));
@@ -92,10 +95,18 @@ metaModel = orderfields(metaModel, kept_fields); % Order to keep nice
 % Add relevant metadata
 metaModel.id = char('Human1-Recon3D Endometrium Subset', 'Developed by: Diego Rodriguez', 'Mail: diegoeldelccm@gmail.com');
 
+metaModel.geneHGNC = cell(length(metaModel.genes), 1);
+[~, geneorder] = ismember(enz_interest.EnsemblID, metaModel.genes);
+for i = 1:length(geneorder)
+    if geneorder(i) ~= 0
+        metaModel.geneHGNC{i} = enz_interest.HGNC(geneorder(i));
+    end
+end
+
 clear i
 %% Perform sanity checks
 verifyModel(metaModel);
 polishedModel = metaModel;
 
 %% Save to file
-% save(['Model files' filesep 'polishedModel.mat'], 'polishedModel');
+save(['Model files' filesep 'polishedModel.mat'], 'polishedModel');

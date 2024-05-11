@@ -6,18 +6,20 @@
 % clear; clc; close all;
 
 %% Initialize
-initCobraToolbox(false);
+try prepareTest()
+catch
+    initCobraToolbox(false);
 
-solverName = 'glpk';
-solverType = 'LP';
-changeCobraSolver(solverName, solverType);
+    solverName = 'glpk';
+    solverType = 'LP';
+    changeCobraSolver(solverName, solverType);
 
-clear solverName solverType
-
+    clear solverName solverType
+end
 %% Read files
 % Import polished model
-[filename, pathname] = uigetfile();
-modelFileName = [pathname filename];
+[fileName, pathname] = uigetfile();
+modelFileName = [pathname fileName];
 displayModel = readCbModel(modelFileName);
 
 if(isfield(displayModel, 'subSystems'))
@@ -26,15 +28,15 @@ end
 
 clear modelFileName
 %% Output network in Cytoscape
-filename = 'networkDisplay';
+[~, file] = fileparts(fileName);
 folder_sub = regexp(pathname,'\','split');
-folder = ['Network files' filesep filename filesep folder_sub{end-1}];
+folder = ['Network files' filesep 'Network Display' filesep folder_sub{end-1}];
 
 if ~exist(folder, 'dir')
     mkdir(folder);
 end
 
-outputNetworkCytoscape(displayModel, [folder filesep filename]);
+outputNetworkCytoscape(displayModel, [folder filesep file]);
 
 % outputNetworkCytoscape(displayModel, [folder filesep filename], ...
 %     displayModel.rxns, displayModel.rxnNames, ...
@@ -48,6 +50,6 @@ tablegenes = table(displayModel.genes, repmat({'gene'}, length(displayModel.gene
 
 totaltable = [tablemets; tablerxns; tablegenes];
 
-writetable(totaltable, [folder filesep filename '_NodeData.csv']);
+writetable(totaltable, [folder filesep fileName '_NodeData.csv']);
 
-clear filename pathname folder folder_sub varnames
+clear fileName pathname folder folder_sub file varnames
