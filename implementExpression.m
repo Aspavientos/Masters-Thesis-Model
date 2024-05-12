@@ -17,9 +17,8 @@ catch
     changeCobraSolver(solverName, solverType);
 
     clear solverName solverType
-
-    disp('COBRA Toolbox initialized!')
 end
+disp('#### COBRA Toolbox initialized! ####')
 %% Read files
 % Import polished model
 modelFileName = ['Model files' filesep 'polishedModel.mat'];
@@ -28,8 +27,8 @@ polishedModel = readCbModel(modelFileName);
 
 % Experimental data
 folder = ['CSV' filesep 'Expression data'];
-file_data = [folder filesep 'GTEx_expr.csv'];
-file_meta = [folder filesep 'GTEx_meta.csv'];
+file_data = [folder filesep 'exprB_RefSeq.csv'];
+file_meta = [folder filesep 'exprB_meta.csv'];
 
 opts_data = detectImportOptions(file_data);
 [opts_data.VariableTypes{2:end}] = deal('double');
@@ -39,21 +38,48 @@ exp_meta = readtable(file_meta, 'TextType','string', 'NumHeaderLines', 0, 'Delim
 
 % Model construction data
 rxns_interest = readtable(['CSV' filesep 'Reactions - Rxn-Sub Pairs.csv']);
+enz_interest = readtable(['CSV' filesep 'Reactions - Enzymes.csv'], 'Delimiter', 'comma');
 
+clear modelFileName folder opts_data file_meta file_data
+%% Options
 % Choose experiment options
-experiment = 'expGTEx';
-cohort = {'Adrenal', 'Testis', 'Ovary'};
+experiment = 'expBChoDHEA';
+cohort = {'Pregnant', 'Nonpregnant'};
+cohort_col = 'Clinical_pregnancy';
 % {'Lung', 'Heart', 'Brain', 'Skin', 'Visceral', 'Prostate', 'Mammary', 'Uterus', 'Muscle'}
 % {'Adrenal', 'Testis', 'Ovary'}
 sinkMode = 'overr'; % 'simple', 'DRAIN', 'overr'
 
+geneformat = 'RefSeq'; % 'Ensembl', 'HGNC', 'RefSeq'
+
 % Source metabolites and objective reactions
-sourcemet = {'MAM01450'}; % DHEA: MAM01660. Cho: MAM01450
+sourcemet = {'MAM01660', 'MAM01450'}; % DHEA: MAM01660. Cho: MAM01450
 
 % Sink metabolites and objective reactions
-sinkmet = {'MAM01338', 'MAM02969', 'MAM01787', 'MAM01069', 'MAM01615', '3αDIOL', '3βDIOL', 'allopregnandiol', 'MAM01614', 'MAM01660'};
+sinkmet = {'MAM01338', 'MAM02969', 'MAM01787', 'MAM01069', 'MAM01615', '3αDIOL', '3βDIOL', 'allopregnandiol', 'MAM01614'};
 
-clear modelFileName folder opts_data file_meta file_data
+% Optional translation if genes are not in ENSEMBL
+switch geneformat
+    case 'HGNC'
+        [~, geneorder] = intersect(exp_data.Properties.VariableNames, polishedModel.geneHGNC);
+        trans_genes = polishedModel.genes(trans_genes);
+
+        newnames = exp_data.Properties.VariableNames;
+        newnames(geneorder) = trans_genes;
+
+        exp_data.Properties.VariableNames = newnames;
+
+    case 'RefSeq'
+        [~, geneorder, trans_genes] = intersect(exp_data.Properties.VariableNames, polishedModel.geneRefSeq);
+        trans_genes = polishedModel.genes(trans_genes);
+
+        newnames = exp_data.Properties.VariableNames;
+        newnames(geneorder) = trans_genes;
+
+        exp_data.Properties.VariableNames = newnames;
+end
+
+clear geneorder trans_genes newnames
 %% FBA calculations
 firstTissue = 1;
 for k = 1:length(cohort)
@@ -62,7 +88,7 @@ for k = 1:length(cohort)
     genelist = findGenesFromRxns(polishedModel, polishedModel.rxns);
 
     % Aggregate experimental data according to cohorts
-    subgroup = strcmp(exp_meta{:,"Tissue"}, cohort{k});
+    subgroup = strcmp(exp_meta{:,cohort_col}, cohort{k});
     [~, sub_ids] = intersect(exp_data{:, 1}, exp_meta{subgroup, 1});
     exprData.gene = exp_data(:,2:end).Properties.VariableNames';
     exprData.med = median(exp_data{sub_ids,2:end}, 1, "omitnan")';
@@ -77,9 +103,10 @@ for k = 1:length(cohort)
 
     % Calculate and change boundary values
     [expr_med, ~] = selectGeneFromGPR(boundaryModel, exprData.gene, exprData.med, GPRparser(boundaryModel));
-    [expr_max, ~] = selectGeneFromGPR(boundaryModel, exprData.gene, exprData.max, GPRparser(boundaryModel));
-    [expr_min, ~] = selectGeneFromGPR(boundaryModel, exprData.gene, exprData.min, GPRparser(boundaryModel));
-    boundaryModel = changeRxnBounds(boundaryModel, boundaryModel.rxns, expr_med, 'u');
+
+    good_rxns = ~isnan(expr_med); % Check in case of nans 
+
+    boundaryModel = changeRxnBounds(boundaryModel, boundaryModel.rxns(good_rxns), expr_med(good_rxns), 'u');
     boundaryModel = changeRxnBounds(boundaryModel, boundaryModel.rxns, 0, 'l');
 
     % Add demand reactions
@@ -167,5 +194,5 @@ for k = 1:length(cohort)
     end
     clear filename folder fract i modelfilename
 end
-clear experiment cohort sinkMode sinkmet sourcemet firstTissue k
+clear experiment cohort cohort_col sinkMode sinkmet sourcemet firstTissue k
 disp('#### Finished! ####')

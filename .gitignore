@@ -8,3 +8,4 @@ Model files/Flux Balance Results
 Data files/
 *.noa
 *.mlapp
+.Rhistory

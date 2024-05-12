@@ -81,7 +81,7 @@ metaModel = generxnAss;
 kept_fields = {'id', ...
     'mets', 'metNames', 'b', 'csense',  'c', 'lb', 'ub', ...
     'rxns', 'rxnNames', ...
-    'genes', 'geneNames', 'geneHGNC',...
+    'genes', 'geneNames', 'geneHGNC', 'geneRefSeq',...
     'rxnGeneMat', 'grRules', 'rules', 'S'};
 exclude_fields = setdiff(fieldnames(metaModel), kept_fields);
 missing_fields = setdiff(kept_fields, fieldnames(metaModel));
@@ -95,11 +95,13 @@ metaModel = orderfields(metaModel, kept_fields); % Order to keep nice
 % Add relevant metadata
 metaModel.id = char('Human1-Recon3D Endometrium Subset', 'Developed by: Diego Rodriguez', 'Mail: diegoeldelccm@gmail.com');
 
-metaModel.geneHGNC = cell(length(metaModel.genes), 1);
+metaModel.geneHGNC = repmat({''}, [length(metaModel.genes), 1]);
+metaModel.geneRefSeq = repmat({''}, [length(metaModel.genes), 1]);
 [~, geneorder] = ismember(enz_interest.EnsemblID, metaModel.genes);
 for i = 1:length(geneorder)
     if geneorder(i) ~= 0
-        metaModel.geneHGNC{i} = enz_interest.HGNC(geneorder(i));
+        metaModel.geneHGNC{i} = enz_interest.HGNC{geneorder(i)};
+        metaModel.geneRefSeq{i} = enz_interest.RefSeq{geneorder(i)};
     end
 end
 
