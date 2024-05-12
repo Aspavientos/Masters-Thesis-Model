@@ -15,6 +15,8 @@ catch
     changeCobraSolver(solverName, solverType);
 
     clear solverName solverType
+
+    disp('COBRA Toolbox initialized!')
 end
 %% Read files
 % Import polished model
@@ -29,8 +31,9 @@ end
 clear modelFileName
 %% Output network in Cytoscape
 [~, file] = fileparts(fileName);
+filesections = split(file, '_');
 folder_sub = regexp(pathname,'\','split');
-folder = ['Network files' filesep 'Network Display' filesep folder_sub{end-1}];
+folder = ['Network files' filesep 'Network Display' filesep folder_sub{end-2} filesep folder_sub{end-1} filesep filesections{2}];
 
 if ~exist(folder, 'dir')
     mkdir(folder);
@@ -50,6 +53,8 @@ tablegenes = table(displayModel.genes, repmat({'gene'}, length(displayModel.gene
 
 totaltable = [tablemets; tablerxns; tablegenes];
 
-writetable(totaltable, [folder filesep fileName '_NodeData.csv']);
+writetable(totaltable, [folder filesep file '_NodeData.csv']);
 
 clear fileName pathname folder folder_sub file varnames
+
+disp('#### Finished! ####')
